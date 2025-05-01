@@ -40,10 +40,10 @@ public class ViewForumDetailServlet extends HttpServlet {
 
                 ThreadCommentService threadCommentService = new ThreadCommentService(mgr);
                 List<Threadcomment> threadCommentList = threadCommentService.findCommentsByThreadId(ThreadIdParam);
-                
+
                 request.setAttribute("selectedThread", thread);
                 request.setAttribute("selectedThreadCommentList", threadCommentList);
-                
+
             } catch (Exception e) {
                 request.setAttribute("errorMessage", "Invalid thread id. Please try again.");
                 request.setAttribute("selectedThreadID", ThreadIdParam);
@@ -53,7 +53,8 @@ public class ViewForumDetailServlet extends HttpServlet {
             request.setAttribute("selectedThreadID", null);
         }
 
-        request.getRequestDispatcher("view/forum/forum-thread-detail.jsp").forward(request, response);
+        String redirectURL = request.getContextPath() + "/view/forum/forum-thread-detail.jsp?thread_id=" + ThreadIdParam;
+        response.sendRedirect(redirectURL);
     }
 
     @Override
