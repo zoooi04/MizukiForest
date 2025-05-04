@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en" data-theme="mizuki_light">
+<html lang="en" data-theme="mizuki_dark">
     <jsp:include page="${request.contextPath}/shared/commonHeader.jsp"/>
     <body>
 

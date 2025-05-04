@@ -3,7 +3,11 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="mizuki_dark">
 
+    <%request.setAttribute("pageTitle", "Forum");%>
+    <jsp:include page="../../shared/title.jsp"/>
     <jsp:include page="${request.contextPath}/shared/commonHeader.jsp"/>
+    <%@ include file="../../shared/header.jsp" %>
+    <jsp:include page="${request.contextPath}/view/forum/forum-subheader.jsp"/>
 
     <head>
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum/forum_thread_list.css">
@@ -13,12 +17,8 @@
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="../js/mizukibase.js"></script>
 
-    <jsp:include page="${request.contextPath}/view/forum/forum-subheader.jsp"/>
 
     <section id="forum" class="forum-section">
-        <%request.setAttribute("pageTitle", "Forum");%>
-        <jsp:include page="../../shared/title.jsp"/>
-        <%@ include file="../../shared/header.jsp" %>
 
         <main class="container mt-5 pt-5">  
             <div class="flex flex-col justify-center my-6 forum-header">
@@ -65,10 +65,10 @@
                         String threadType = (String) session.getAttribute("threadType");
                         if ("my".equals(threadType)) {
                     %>
-                    <a id="add_new_thread" href="forum_addthread_form.jsp">
+                    <a id="add_new_thread" href="forum-add-thread-form.jsp">
                         <div class="thread-card card w-full h-full shadow-sm sm:hover:-translate-y-1 sm:hover:shadow-md sm:transition sm:duration-200">
                             <div class="thread-content card-body p-4">
-                                <div class="font-serif break-words overflow-ellipsis my-auto">
+                                <div class="break-words overflow-ellipsis my-auto">
                                     <div class="flex justify-start gap-x-4 items-center">
                                         <div class="w-12 flex-shrink-0">
                                             <div class="h-12 w-12 relative overflow-hidden flex-shrink-0 select-none pointer-events-none">
@@ -77,7 +77,7 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <p class="thread-title line-clamp-2 text-lg font-sans font-bold mb-2">
+                                            <p class="thread-title line-clamp-2 text-lg font-bold mb-2">
                                                 <u>Add Thread Now</u>
                                             </p>
                                             <p class="thread-description text-sm">
@@ -104,7 +104,7 @@
                     <a id="<%=idtag%>" href="../../ViewForumDetailServlet?thread_id=<%=thread.getThreadid()%>">
                         <div class="thread-card card w-full h-full shadow-sm sm:hover:-translate-y-1 sm:hover:shadow-md sm:transition sm:duration-200">
                             <div class="thread-content card-body p-4">
-                                <div class="font-serif break-words overflow-ellipsis my-auto">
+                                <div class=" break-words overflow-ellipsis my-auto">
                                     <div class="flex justify-start gap-x-4 items-center">
                                         <div class="w-12 flex-shrink-0">
                                             <div class="h-12 w-12 relative overflow-hidden flex-shrink-0 select-none pointer-events-none">
@@ -112,7 +112,7 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <p class="thread-title line-clamp-2 text-lg font-sans font-bold mb-2">
+                                            <p class="thread-title line-clamp-2 text-lg font-bold mb-2">
                                                 <%= thread.getThreadtitle()%>
                                             </p>
                                             <p class="thread-description text-sm">

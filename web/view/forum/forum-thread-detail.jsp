@@ -2,21 +2,21 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="mizuki_dark">
 
-    <jsp:include page="${request.contextPath}/shared/commonHeader.jsp"/>
-    
     <head>
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum/forum_thread_list.css">
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum/forum_thread_detail.css">
     </head>
 
+    <%request.setAttribute("pageTitle", "Thread Detail");%>
+    <jsp:include page="../../shared/title.jsp"/>
+    <jsp:include page="${request.contextPath}/shared/commonHeader.jsp"/>
+    <%@ include file="../../shared/header.jsp" %>
+
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="../js/mizukibase.js"></script>
     <script src="<%= request.getContextPath()%>/js/forum/forum_thread_detail.js"></script>
 
-    <section id="forum" class="">
-        <%request.setAttribute("pageTitle", "Thread Detail");%>
-        <jsp:include page="../../shared/title.jsp"/>
-        <%@ include file="../../shared/header.jsp" %>
+    <body>
 
         <main class="container mt-5 pt-5">
             <div class="thread-container">
@@ -39,7 +39,7 @@
                         </div>
                     </div>
 
-                    <h1 class="font-serif text-3xl mb-3">Thread Title</h1>
+                    <h1 class="text-3xl mb-3">Thread Title</h1>
 
                     <div class="thread-content">
                         <p>Thread Description</p>
@@ -171,6 +171,6 @@
                 </div>
             </div>
         </main>
-    </section>
+    </body>
 
 </html>
