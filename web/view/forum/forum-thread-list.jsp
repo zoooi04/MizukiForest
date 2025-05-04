@@ -7,6 +7,7 @@
 
     <head>
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum/forum_thread_list.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
 
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
@@ -61,6 +62,39 @@
                     <%@ page import="java.util.List" %>
                     <%@ page import="model.Thread" %>
                     <%
+                        String threadType = (String) session.getAttribute("threadType");
+                        if ("my".equals(threadType)) {
+                    %>
+                    <a id="add_new_thread" href="forum_addthread_form.jsp">
+                        <div class="thread-card card w-full h-full shadow-sm sm:hover:-translate-y-1 sm:hover:shadow-md sm:transition sm:duration-200">
+                            <div class="thread-content card-body p-4">
+                                <div class="font-serif break-words overflow-ellipsis my-auto">
+                                    <div class="flex justify-start gap-x-4 items-center">
+                                        <div class="w-12 flex-shrink-0">
+                                            <div class="h-12 w-12 relative overflow-hidden flex-shrink-0 select-none pointer-events-none">
+                                                <i class="fa fa-plus" style="font-size:48px;color:whitesmoke" ></i>
+                                                <!--<img class="h-12 w-12 thread-avatar" src="<%= request.getContextPath()%>/media/images/mizuki.png" />-->
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p class="thread-title line-clamp-2 text-lg font-sans font-bold mb-2">
+                                                <u>Add Thread Now</u>
+                                            </p>
+                                            <p class="thread-description text-sm">
+                                                <span>
+                                                    Add a new thread to share with others.
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <%
+                        }
+                    %>
+                    <%
                         List<model.Thread> threadList = (List<model.Thread>) session.getAttribute("forumThreadList");
                         if (threadList != null && !threadList.isEmpty()) {
                             for (Thread thread : threadList) {
@@ -96,7 +130,7 @@
                         }
                     } else {
                     %>
-                    <div class="col-span-2 text-center py-10">
+                    <div class="col-span-4 text-center py-10">
                         <p class="text-xl">No threads found</p>
                         <p class="text-secondary mt-2">Be the first to start a conversation!</p>
                     </div>

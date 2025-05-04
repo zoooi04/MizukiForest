@@ -53,7 +53,12 @@ public class ViewForumEntryServlet extends HttpServlet {
             // Get threadType parameter
             String threadType = request.getParameter("threadType");
             if (threadType == null || threadType.isEmpty()) {
-                threadType = "all"; // Default to all threads
+                if(session.getAttribute("threadType") == null){
+                    threadType = "all"; // Default to all threads
+                    session.setAttribute("threadType", threadType);
+                }else{
+                    threadType = (String) session.getAttribute("threadType");
+                }
             }
 
             // Use ThreadService to fetch filtered threads
