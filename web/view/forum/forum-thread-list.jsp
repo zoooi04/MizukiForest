@@ -73,7 +73,6 @@
                                         <div class="w-12 flex-shrink-0">
                                             <div class="h-12 w-12 relative overflow-hidden flex-shrink-0 select-none pointer-events-none">
                                                 <i class="fa fa-plus" style="font-size:48px;color:whitesmoke" ></i>
-                                                <!--<img class="h-12 w-12 thread-avatar" src="<%= request.getContextPath()%>/media/images/mizuki.png" />-->
                                             </div>
                                         </div>
                                         <div>

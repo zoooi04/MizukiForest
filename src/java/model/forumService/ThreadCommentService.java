@@ -37,7 +37,7 @@ public class ThreadCommentService {
 
     public List<Threadcomment> findCommentsByThreadId(String threadId) {
         TypedQuery<Threadcomment> query = mgr.createQuery(
-            "SELECT c FROM Threadcomment c WHERE c.threadid.threadid = :threadId AND c.isdeleted = false ORDER BY c.postdatetime ASC", 
+            "SELECT c FROM Threadcomment c WHERE c.threadid.threadid = :threadId AND c.commentidreplyingto IS NULL AND c.isdeleted = false ORDER BY c.postdatetime ASC", 
             Threadcomment.class
         );
         query.setParameter("threadId", threadId);

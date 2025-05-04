@@ -21,6 +21,11 @@ public class ThreadVoteService {
         return mgr.find(Threadvote.class, new ThreadvotePK(threadId, userId));
     }
 
+    public Boolean findVoteByUserAndThread(String userId, String threadId) {
+        Threadvote vote = findVote(threadId, userId);
+        return vote != null ? vote.getVotetype() : null;
+    }
+
     public boolean removeVote(String threadId, String userId) {
         Threadvote vote = findVote(threadId, userId);
         if (vote != null) {
@@ -28,5 +33,13 @@ public class ThreadVoteService {
             return true;
         }
         return false;
+    }
+
+    public void updateVoteType(String threadId, String userId, boolean voteType) {
+        Threadvote vote = findVote(threadId, userId);
+        if (vote != null) {
+            vote.setVotetype(voteType);
+            mgr.merge(vote);
+        }
     }
 }

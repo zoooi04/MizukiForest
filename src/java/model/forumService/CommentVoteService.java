@@ -21,6 +21,11 @@ public class CommentVoteService {
         return mgr.find(Commentvote.class, new CommentvotePK(commentId, userId));
     }
 
+    public Boolean findVoteByUserAndComment(String userId, String commentId) {
+        Commentvote vote = findVote(commentId, userId);
+        return vote != null ? vote.getVotetype() : null;
+    }
+
     public boolean removeVote(String commentId, String userId) {
         Commentvote vote = findVote(commentId, userId);
         if (vote != null) {
@@ -28,5 +33,13 @@ public class CommentVoteService {
             return true;
         }
         return false;
+    }
+
+    public void updateVoteType(String commentId, String userId, boolean voteType) {
+        Commentvote vote = findVote(commentId, userId);
+        if (vote != null) {
+            vote.setVotetype(voteType);
+            mgr.merge(vote);
+        }
     }
 }

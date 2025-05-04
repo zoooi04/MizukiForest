@@ -1,10 +1,12 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List, java.util.Map" %>
+
 <!DOCTYPE html>
 <html lang="en" data-theme="mizuki_dark">
 
     <head>
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum/forum_thread_list.css">
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum/forum_thread_detail.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
 
     <%request.setAttribute("pageTitle", "Thread Detail");%>
@@ -17,7 +19,6 @@
     <script src="<%= request.getContextPath()%>/js/forum/forum_thread_detail.js"></script>
 
     <body>
-
         <main class="container mt-5 pt-5">
             <div class="thread-container">
                 <!-- Back to Forum Link -->
@@ -25,63 +26,85 @@
                     <i class="fas fa-arrow-left"></i> Back to Forum
                 </a>
 
+                <%-- Display error message if present --%>
+                <% if (request.getAttribute("errorMessage") != null) {%>
+                <div class="error-message">
+                    <p><%= request.getAttribute("errorMessage")%></p>
+                </div>
+                <% } %>
+
                 <!-- Thread Post Section -->
                 <div class="thread-post">
                     <div class="thread-header">
-                        <img src="<%= request.getContextPath()%>/media/images/user-placeholder.png" alt="User Avatar" class="user-avatar">
+                        <% if (session.getAttribute("selectedThread") != null) {%>
+                        <img src="<%= request.getContextPath()%>/media/images/mizuki.png" alt="User Avatar" class="user-avatar">
                         <div>
-                            <div class="font-bold">Username</div>
+                            <div class="font-bold"><%= ((model.Users) ((model.Thread) session.getAttribute("selectedThread")).getUserid()).getUsername()%></div>
                             <div class="thread-meta">
-                                <span>Posted 2 days ago</span>
+                                <span>Posted: Not Available</span>
                                 <span class="dot"></span>
-                                <span>Category: General</span>
+                                <% if (session.getAttribute("selectedThreadCategory") != null) {%>
+                                <span>Category: <%= ((model.Threadcategory) session.getAttribute("selectedThreadCategory")).getThreadcategoryname()%></span>
+                                <% } else { %>
+                                <span>Category: Not Available</span>
+                                <% } %>
                             </div>
                         </div>
+                        <% } else { %>
+                        <p>Thread details are not available.</p>
+                        <% } %>
                     </div>
 
-                    <h1 class="text-3xl mb-3">Thread Title</h1>
+                    <% if (session.getAttribute("selectedThread") != null) {%>
+                    <h1 class="text-3xl mb-3"><%= ((model.Thread) session.getAttribute("selectedThread")).getThreadtitle()%></h1>
 
                     <div class="thread-content">
-                        <p>Thread Description</p>
-                        <!-- Thread image if available -->
-                        <img src="<%= request.getContextPath()%>/media/images/mizuki.png" alt="Thread Image" class="thread-image">
+                        <p><%= ((model.Thread) session.getAttribute("selectedThread")).getThreaddescription()%></p>
+                        <% List<model.Threadimage> images = (List<model.Threadimage>) session.getAttribute("selectedThreadImages"); %>
+                        <% if (images != null && !images.isEmpty()) { %>
+                        <% for (model.Threadimage image : images) { %>
+                        <% if (image.getImage() != null && !image.getImage().isEmpty()) {%>
+                        <img src="<%= request.getContextPath() + "/media/images/" + image.getImage()%>" alt="Thread Image" class="thread-image">
+                        <% } %>
+                        <% } %>
+                        <% }%>
                     </div>
 
-                    <!-- Thread Actions -->
                     <div class="thread-actions">
                         <div class="action-group">
                             <button class="action-btn">
-                                <i class="fas fa-thumbs-up"></i>
-                                <span>123</span>
+                                <i class="<%= (session.getAttribute("threadVoteType") != null && (Boolean) session.getAttribute("threadVoteType")) ? "bi-hand-thumbs-up-fill" : "bi-hand-thumbs-up" %>"></i>
+                                <span><%= ((model.Thread) session.getAttribute("selectedThread")).getUpvote()%></span>
                             </button>
                             <button class="action-btn">
-                                <i class="fas fa-thumbs-down"></i>
-                                <span>45</span>
+                                <i class="bi <%= (session.getAttribute("threadVoteType") != null && !(Boolean) session.getAttribute("threadVoteType")) ? "bi-hand-thumbs-down-fill" : "bi-hand-thumbs-down" %>"></i>
+                                <span><%= ((model.Thread) session.getAttribute("selectedThread")).getDownvote()%></span>
                             </button>
                         </div>
 
                         <div class="action-group">
                             <button class="action-btn" style="display: block">
-                                <i class="fas fa-pencil-alt"></i>
+                                <i class="bi bi-pencil-square"></i>
                                 <span>Edit</span>
                             </button>
                             <button class="action-btn" style="display: block">
-                                <i class="fas fa-trash"></i>
+                                <i class="bi bi-trash"></i>
                                 <span>Delete</span>
                             </button>
                             <button class="action-btn">
-                                <i class="fas fa-exclamation-circle"></i>
+                                <i class="bi bi-exclamation-circle"></i>
                                 <span>Report</span>
                             </button>
                         </div>
                     </div>
+                    <% }%>
                 </div>
 
                 <!-- Comment Form -->
                 <div class="comment-form">
                     <div class="flex items-center mb-3">
-                        <img src="<%= request.getContextPath()%>/media/images/user-placeholder.png" alt="User Avatar" class="comment-avatar mr-2">
-                        <span>Comment as <strong>Username</strong></span>
+                        <img src="<%= request.getContextPath()%>/media/images/mizuki.png" alt="User Avatar" class="comment-avatar mr-2">
+                        <span>Comment as <strong><%= (String) ((model.Users) session.getAttribute("currentUser")).getUsername()%></strong></span>
                     </div>
                     <textarea placeholder="What are your thoughts?"></textarea>
                     <div class="flex justify-end">
@@ -91,86 +114,98 @@
 
                 <!-- Comment Section -->
                 <div class="comment-section">
-                    <div class="comment-count">Comments (2)</div>
-
-                    <!-- Comment Item 1 with Replies -->
+                    <% List<model.Threadcomment> comments = (List<model.Threadcomment>) session.getAttribute("selectedThreadCommentList"); %>
+                    <% Map<String, List<model.Threadcomment>> repliesMap = (Map<String, List<model.Threadcomment>>) session.getAttribute("repliesMap"); %>
+                    <% Map<String, Boolean> commentVotes = (Map<String, Boolean>) session.getAttribute("commentVotes"); %>
+                    <% if (comments != null && !comments.isEmpty()) { %>
+                    <% for (model.Threadcomment comment : comments) {%>
                     <div class="comment-item">
-                        <img src="<%= request.getContextPath()%>/media/images/user-placeholder.png" alt="User Avatar" class="comment-avatar">
+                        <img src="<%= request.getContextPath()%>/media/images/mizuki.png" alt="User Avatar" class="comment-avatar">
                         <div class="comment-content">
-                            <div class="comment-author">Anonymous</div>
-                            <div class="comment-text">This is a sample comment content. It can span multiple lines and contain various opinions.</div>
+                            <div class="comment-author">
+                                <%= ((String) ((model.Users) session.getAttribute("currentUser")).getUserid()).equals(comment.getUserid().getUserid())
+                                    ? comment.getUserid().getUsername()
+                                    : "Anonymous User - " + comment.getUserid().getUserid().replaceAll("^[A-Za-z]+", "") %>
+                            </div>
+                            <div class="comment-text"><%= comment.getContent()%></div>
                             <div class="comment-actions">
-                                <div class="comment-action">
-                                    <i class="fas fa-thumbs-up"></i>
-                                    <span>10</span>
-                                </div>
-                                <div class="comment-action">
-                                    <i class="fas fa-thumbs-down"></i>
-                                    <span>2</span>
-                                </div>
+                                <button class="action-btn">
+                                    <i class="bi <%= commentVotes != null && commentVotes.get(comment.getThreadcommentid()) != null && commentVotes.get(comment.getThreadcommentid()) ? "bi-hand-thumbs-up-fill" : "bi-hand-thumbs-up"%>"></i>
+                                    <span><%= comment.getUpvote()%></span>
+                                </button>
+                                <button class="action-btn">
+                                    <i class="bi <%= commentVotes != null && commentVotes.get(comment.getThreadcommentid()) != null && !commentVotes.get(comment.getThreadcommentid()) ? "bi-hand-thumbs-down-fill" : "bi-hand-thumbs-down"%>"></i>
+                                    <span><%= comment.getDownvote()%></span>
+                                </button>
                                 <div class="comment-action reply">
-                                    <i class="fas fa-reply"></i>
+                                    <i class="bi bi-reply"></i>
                                     <span>Reply</span>
                                 </div>
-                                <div class="comment-action" style="display: block">
-                                    <i class="fas fa-pencil-alt"></i>
+                                <div class="comment-action edit">
+                                    <i class="bi bi-pencil-square"></i>
                                     <span>Edit</span>
                                 </div>
-                                <div class="comment-action" style="display: block">
-                                    <i class="fas fa-trash"></i>
+                                <div class="comment-action delete">
+                                    <i class="bi bi-trash"></i>
                                     <span>Delete</span>
                                 </div>
-                                <div class="comment-action">
-                                    <i class="fas fa-exclamation-circle"></i>
+                                <div class="comment-action report">
+                                    <i class="bi bi-exclamation-circle"></i>
                                     <span>Report</span>
                                 </div>
                             </div>
 
                             <!-- Toggle for replies -->
-                            <div class="toggle-replies" onclick="toggleReplies('comment1')">
-                                <i class="fas fa-chevron-down"></i> 
-                                <span>Show replies (2)</span>
+                            <%
+                                if (repliesMap.get(comment.getThreadcommentid()) != null && !repliesMap.get(comment.getThreadcommentid()).isEmpty()) {
+                            %>
+                            <div class="toggle-replies" onclick="toggleReplies('<%= comment.getThreadcommentid()%>')">
+                                <span>Show replies (<%= repliesMap.get(comment.getThreadcommentid()) != null ? repliesMap.get(comment.getThreadcommentid()).size() : 0%>)</span>
                             </div>
+                            <%
+                                }
+                            %>
 
                             <!-- Replies Container -->
-                            <div id="comment1-replies" class="replies-container replies-collapsed">
-                                <!-- Nested Reply 1 -->
+                            <div id="<%= comment.getThreadcommentid()%>-replies" class="replies-container replies-collapsed">
+                                <% if (repliesMap != null) { %>
+                                <% List<model.Threadcomment> replies = repliesMap.get(comment.getThreadcommentid()); %>
+                                <% Map<String, Map<String, Boolean>> replyVotes = (Map<String, Map<String, Boolean>>) session.getAttribute("replyVotes"); %>
+                                <% if (replies != null && !replies.isEmpty()) { %>
+                                <% for (model.Threadcomment reply : replies) {%>
                                 <div class="comment-item indented-comment">
-                                    <img src="<%= request.getContextPath()%>/media/images/user-placeholder.png" alt="User Avatar" class="comment-avatar">
+                                    <img src="<%= request.getContextPath()%>/media/images/mizuki.png" alt="User Avatar" class="comment-avatar">
                                     <div class="comment-content">
-                                        <div class="comment-author">ReplyUser1</div>
-                                        <div class="comment-text">I agree with your comment! Very insightful observations.</div>
+                                        <div class="comment-author">
+                                            <%= ((String) ((model.Users) session.getAttribute("currentUser")).getUserid()).equals(reply.getUserid().getUserid())
+                                                ? reply.getUserid().getUsername()
+                                                : "Anonymous User - " + reply.getUserid().getUserid().replaceAll("^[A-Za-z]+", "") %>
+                                        </div>
+                                        <div class="comment-text"><%= reply.getContent()%></div>
                                         <div class="comment-actions">
-                                            <div class="comment-action">
-                                                <i class="fas fa-thumbs-up"></i>
-                                                <span>3</span>
-                                            </div>
-                                            <div class="comment-action">
-                                                <i class="fas fa-thumbs-down"></i>
-                                                <span>0</span>
-                                            </div>
-                                            <div class="comment-action">
-                                                <i class="fas fa-pencil-alt"></i>
-                                                <span>Edit</span>
-                                            </div>
-                                            <div class="comment-action">
-                                                <i class="fas fa-trash"></i>
-                                                <span>Delete</span>
-                                            </div>
-                                            <div class="comment-action">
-                                                <i class="fas fa-exclamation-circle"></i>
-                                                <span>Report</span>
-                                            </div>
+                                            <button class="action-btn">
+                                                <i class="bi <%= replyVotes != null && replyVotes.get(comment.getThreadcommentid()) != null && replyVotes.get(comment.getThreadcommentid()).get(reply.getThreadcommentid()) != null && replyVotes.get(comment.getThreadcommentid()).get(reply.getThreadcommentid()) ? "bi-hand-thumbs-up-fill" : "bi-hand-thumbs-up"%>"></i>
+                                                <span><%= reply.getUpvote()%></span>
+                                            </button>
+                                            <button class="action-btn">
+                                                <i class="bi <%= replyVotes != null && replyVotes.get(comment.getThreadcommentid()) != null && replyVotes.get(comment.getThreadcommentid()).get(reply.getThreadcommentid()) != null && !replyVotes.get(comment.getThreadcommentid()).get(reply.getThreadcommentid()) ? "bi-hand-thumbs-down-fill" : "bi-hand-thumbs-down"%>"></i>
+                                                <span><%= reply.getDownvote()%></span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-
+                                <% } %>
+                                <% } %>
+                                <% } %>
                             </div>
                         </div>
                     </div>
+                    <% } %>
+                    <% } else { %>
+                    <p>No comments available.</p>
+                    <% }%>
                 </div>
             </div>
         </main>
     </body>
-
 </html>
