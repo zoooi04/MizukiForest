@@ -2,12 +2,16 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="mizuki_dark">
 
+    <jsp:include page="${request.contextPath}/shared/commonHeader.jsp"/>
+    
     <head>
-        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum.css">
-        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum_thread_detail.css">
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum/forum_thread_list.css">
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum/forum_thread_detail.css">
     </head>
 
-    <jsp:include page="${request.contextPath}/shared/commonHeader.jsp"/>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="../js/mizukibase.js"></script>
+    <script src="<%= request.getContextPath()%>/js/forum/forum_thread_detail.js"></script>
 
     <section id="forum" class="">
         <%request.setAttribute("pageTitle", "Thread Detail");%>
@@ -169,7 +173,4 @@
         </main>
     </section>
 
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script src="../js/mizukibase.js"></script>
-    <script src="<%= request.getContextPath()%>/js/forum_thread_detail.js"></script>
 </html>

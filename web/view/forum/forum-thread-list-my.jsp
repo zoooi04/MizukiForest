@@ -3,11 +3,16 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="mizuki_dark">
 
+    <jsp:include page="${request.contextPath}/shared/commonHeader.jsp"/>
+
     <head>
-        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum.css">
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum/forum_thread_list.css">
     </head>
 
-    <jsp:include page="${request.contextPath}/shared/commonHeader.jsp"/>
+    <script src="../js/mizukibase.js"></script>
+
+    <jsp:include page="${request.contextPath}/view/forum/forum-subheader.jsp"/>
+
 
     <section id="forum" class="">
         <%request.setAttribute("pageTitle", "My Threads");%>
@@ -101,7 +106,4 @@
 
         </main>
     </section>
-
-    <script src="../js/mizukibase.js"></script>
-
 </html>

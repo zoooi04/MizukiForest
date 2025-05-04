@@ -2,109 +2,17 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en" data-theme="mizuki_dark">
+
     <jsp:include page="${request.contextPath}/shared/commonHeader.jsp"/>
 
     <head>
-
-        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum.css">
-        
-        <style>
-            /* Enhanced styling for forum list */
-            .forum-section {
-                padding: 2rem 0;
-            }
-
-            .forum-header {
-                margin-bottom: 2rem;
-            }
-
-            .filter-form {
-                background: #2d2d35;
-                padding: 1rem;
-                border-radius: 8px;
-                margin-bottom: 2rem;
-                border: 1px solid #3d3d45;
-            }
-
-            .filter-form select {
-                background: #3a3a3a;
-                color: #cecece;
-                border: 1px solid #4a4a4a;
-                border-radius: 4px;
-                padding: 0.5rem;
-            }
-
-            .filter-form button {
-                background: #4978a8;
-                color: #fff;
-                border: none;
-                border-radius: 4px;
-                padding: 0.5rem 1rem;
-                cursor: pointer;
-                transition: background 0.3s ease;
-            }
-
-            .filter-form button:hover {
-                background: #5989b9;
-            }
-
-            .thread-card {
-                background: #333333;
-                border-radius: 8px;
-                overflow: hidden;
-                transition: transform 0.2s ease, box-shadow 0.2s ease;
-            }
-
-            .thread-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            }
-
-            .thread-content {
-                padding: 1rem;
-            }
-
-            .thread-title {
-                color: #cecece;
-                font-weight: bold;
-                margin-bottom: 0.5rem;
-            }
-
-            .thread-description {
-                color: #9a9a9a;
-                font-size: 0.875rem;
-            }
-
-            .thread-avatar {
-                border-radius: 50%;
-                border: 2px solid #4978a8;
-            }
-
-            .create-thread-btn {
-                position: fixed;
-                bottom: 2rem;
-                right: 2rem;
-                background: #4978a8;
-                color: white;
-                width: 60px;
-                height: 60px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1.5rem;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-                cursor: pointer;
-                z-index: 100;
-                transition: background 0.3s ease, transform 0.2s ease;
-            }
-
-            .create-thread-btn:hover {
-                background: #5989b9;
-                transform: scale(1.05);
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum/forum_thread_list.css">
     </head>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="../js/mizukibase.js"></script>
+
+    <jsp:include page="${request.contextPath}/view/forum/forum-subheader.jsp"/>
 
     <section id="forum" class="forum-section">
         <%request.setAttribute("pageTitle", "Forum");%>
@@ -204,7 +112,4 @@
             </a>
         </main>
     </section>
-
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script src="../js/mizukibase.js"></script>
 </html>

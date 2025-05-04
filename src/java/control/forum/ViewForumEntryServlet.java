@@ -78,7 +78,7 @@ public class ViewForumEntryServlet extends HttpServlet {
             request.setAttribute("selectedCategory", category);
             request.setAttribute("selectedVote", vote);
 
-            String redirectURL = request.getContextPath() + "/view/forum/forum-thread-list.jsp?category=" + category + "&vote=" + vote;
+            String redirectURL = request.getContextPath() + "/view/forum/forum-thread-list.jsp?threadType=" + threadType + "&category=" + category + "&vote=" + vote;
             response.sendRedirect(redirectURL);
 
         } catch (Exception e) {
