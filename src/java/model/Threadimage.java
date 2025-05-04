@@ -10,17 +10,17 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author JiaQuann
+ * @author johno
  */
 @Entity
 @Table(name = "THREADIMAGE")
@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Threadimage.findByImageid", query = "SELECT t FROM Threadimage t WHERE t.threadimagePK.imageid = :imageid"),
     @NamedQuery(name = "Threadimage.findByThreadid", query = "SELECT t FROM Threadimage t WHERE t.threadimagePK.threadid = :threadid"),
     @NamedQuery(name = "Threadimage.findByIsmainimage", query = "SELECT t FROM Threadimage t WHERE t.ismainimage = :ismainimage"),
-    @NamedQuery(name = "Threadimage.findByIsdeleted", query = "SELECT t FROM Threadimage t WHERE t.isdeleted = :isdeleted")})
+    @NamedQuery(name = "Threadimage.findByIsdeleted", query = "SELECT t FROM Threadimage t WHERE t.isdeleted = :isdeleted"),
+    @NamedQuery(name = "Threadimage.findByImage", query = "SELECT t FROM Threadimage t WHERE t.image = :image")})
 public class Threadimage implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,9 +45,9 @@ public class Threadimage implements Serializable {
     @NotNull
     @Column(name = "ISDELETED")
     private Boolean isdeleted;
-    @Lob
+    @Size(max = 255)
     @Column(name = "IMAGE")
-    private Serializable image;
+    private String image;
     @JoinColumn(name = "THREADID", referencedColumnName = "THREADID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Thread thread;
@@ -92,11 +93,11 @@ public class Threadimage implements Serializable {
         this.isdeleted = isdeleted;
     }
 
-    public Serializable getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Serializable image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

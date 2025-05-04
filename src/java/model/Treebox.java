@@ -11,7 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -23,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author JiaQuann
+ * @author johno
  */
 @Entity
 @Table(name = "TREEBOX")
@@ -33,7 +32,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Treebox.findByTreeboxid", query = "SELECT t FROM Treebox t WHERE t.treeboxid = :treeboxid"),
     @NamedQuery(name = "Treebox.findByTreeboxname", query = "SELECT t FROM Treebox t WHERE t.treeboxname = :treeboxname"),
     @NamedQuery(name = "Treebox.findByTreeboxcost", query = "SELECT t FROM Treebox t WHERE t.treeboxcost = :treeboxcost"),
-    @NamedQuery(name = "Treebox.findByIsdeleted", query = "SELECT t FROM Treebox t WHERE t.isdeleted = :isdeleted")})
+    @NamedQuery(name = "Treebox.findByIsarchived", query = "SELECT t FROM Treebox t WHERE t.isarchived = :isarchived"),
+    @NamedQuery(name = "Treebox.findByIsdeleted", query = "SELECT t FROM Treebox t WHERE t.isdeleted = :isdeleted"),
+    @NamedQuery(name = "Treebox.findByTreeboximage", query = "SELECT t FROM Treebox t WHERE t.treeboximage = :treeboximage")})
 public class Treebox implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,11 +55,17 @@ public class Treebox implements Serializable {
     private int treeboxcost;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "ISARCHIVED")
+    private Boolean isarchived;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "ISDELETED")
     private Boolean isdeleted;
-    @Lob
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "TREEBOXIMAGE")
-    private Serializable treeboximage;
+    private String treeboximage;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "treebox")
     private List<Raritydroprate> raritydroprateList;
     @OneToMany(mappedBy = "treeboxid")
@@ -75,11 +82,13 @@ public class Treebox implements Serializable {
         this.treeboxid = treeboxid;
     }
 
-    public Treebox(String treeboxid, String treeboxname, int treeboxcost, Boolean isdeleted) {
+    public Treebox(String treeboxid, String treeboxname, int treeboxcost, Boolean isarchived, Boolean isdeleted, String treeboximage) {
         this.treeboxid = treeboxid;
         this.treeboxname = treeboxname;
         this.treeboxcost = treeboxcost;
+        this.isarchived = isarchived;
         this.isdeleted = isdeleted;
+        this.treeboximage = treeboximage;
     }
 
     public String getTreeboxid() {
@@ -106,6 +115,14 @@ public class Treebox implements Serializable {
         this.treeboxcost = treeboxcost;
     }
 
+    public Boolean getIsarchived() {
+        return isarchived;
+    }
+
+    public void setIsarchived(Boolean isarchived) {
+        this.isarchived = isarchived;
+    }
+
     public Boolean getIsdeleted() {
         return isdeleted;
     }
@@ -114,11 +131,11 @@ public class Treebox implements Serializable {
         this.isdeleted = isdeleted;
     }
 
-    public Serializable getTreeboximage() {
+    public String getTreeboximage() {
         return treeboximage;
     }
 
-    public void setTreeboximage(Serializable treeboximage) {
+    public void setTreeboximage(String treeboximage) {
         this.treeboximage = treeboximage;
     }
 

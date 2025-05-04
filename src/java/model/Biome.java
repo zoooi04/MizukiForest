@@ -11,7 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -23,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author JiaQuann
+ * @author johno
  */
 @Entity
 @Table(name = "BIOME")
@@ -35,7 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Biome.findByBiomedescription", query = "SELECT b FROM Biome b WHERE b.biomedescription = :biomedescription"),
     @NamedQuery(name = "Biome.findByBiomecost", query = "SELECT b FROM Biome b WHERE b.biomecost = :biomecost"),
     @NamedQuery(name = "Biome.findByIsdeleted", query = "SELECT b FROM Biome b WHERE b.isdeleted = :isdeleted"),
-    @NamedQuery(name = "Biome.findByIsarchived", query = "SELECT b FROM Biome b WHERE b.isarchived = :isarchived")})
+    @NamedQuery(name = "Biome.findByIsarchived", query = "SELECT b FROM Biome b WHERE b.isarchived = :isarchived"),
+    @NamedQuery(name = "Biome.findByBiomeimage", query = "SELECT b FROM Biome b WHERE b.biomeimage = :biomeimage")})
 public class Biome implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -67,9 +67,11 @@ public class Biome implements Serializable {
     @NotNull
     @Column(name = "ISARCHIVED")
     private Boolean isarchived;
-    @Lob
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "BIOMEIMAGE")
-    private Serializable biomeimage;
+    private String biomeimage;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "biomeid")
     private List<Land> landList;
     @OneToMany(mappedBy = "biomeid")
@@ -82,13 +84,14 @@ public class Biome implements Serializable {
         this.biomeid = biomeid;
     }
 
-    public Biome(String biomeid, String biomename, String biomedescription, int biomecost, Boolean isdeleted, Boolean isarchived) {
+    public Biome(String biomeid, String biomename, String biomedescription, int biomecost, Boolean isdeleted, Boolean isarchived, String biomeimage) {
         this.biomeid = biomeid;
         this.biomename = biomename;
         this.biomedescription = biomedescription;
         this.biomecost = biomecost;
         this.isdeleted = isdeleted;
         this.isarchived = isarchived;
+        this.biomeimage = biomeimage;
     }
 
     public String getBiomeid() {
@@ -139,11 +142,11 @@ public class Biome implements Serializable {
         this.isarchived = isarchived;
     }
 
-    public Serializable getBiomeimage() {
+    public String getBiomeimage() {
         return biomeimage;
     }
 
-    public void setBiomeimage(Serializable biomeimage) {
+    public void setBiomeimage(String biomeimage) {
         this.biomeimage = biomeimage;
     }
 

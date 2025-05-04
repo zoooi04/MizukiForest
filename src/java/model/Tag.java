@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+
 package model;
 
 import java.io.Serializable;
@@ -22,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author JiaQuann
+ * @author johno
  */
 @Entity
 @Table(name = "TAG")
@@ -148,5 +149,5 @@ public class Tag implements Serializable {
     public String toString() {
         return "model.Tag[ tagid=" + tagid + " ]";
     }
-    
+
 }

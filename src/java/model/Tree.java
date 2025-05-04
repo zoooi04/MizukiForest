@@ -11,7 +11,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -24,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author JiaQuann
+ * @author johno
  */
 @Entity
 @Table(name = "TREE")
@@ -36,7 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Tree.findByTreedescription", query = "SELECT t FROM Tree t WHERE t.treedescription = :treedescription"),
     @NamedQuery(name = "Tree.findByIsarchived", query = "SELECT t FROM Tree t WHERE t.isarchived = :isarchived"),
     @NamedQuery(name = "Tree.findByTreestatus", query = "SELECT t FROM Tree t WHERE t.treestatus = :treestatus"),
-    @NamedQuery(name = "Tree.findByIsdeleted", query = "SELECT t FROM Tree t WHERE t.isdeleted = :isdeleted")})
+    @NamedQuery(name = "Tree.findByIsdeleted", query = "SELECT t FROM Tree t WHERE t.isdeleted = :isdeleted"),
+    @NamedQuery(name = "Tree.findByTreeimage", query = "SELECT t FROM Tree t WHERE t.treeimage = :treeimage")})
 public class Tree implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -68,9 +68,11 @@ public class Tree implements Serializable {
     @NotNull
     @Column(name = "ISDELETED")
     private Boolean isdeleted;
-    @Lob
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "TREEIMAGE")
-    private Serializable treeimage;
+    private String treeimage;
     @OneToMany(mappedBy = "treeid")
     private List<Userinventoryitem> userinventoryitemList;
     @OneToMany(mappedBy = "treeid")
@@ -86,13 +88,14 @@ public class Tree implements Serializable {
         this.treeid = treeid;
     }
 
-    public Tree(String treeid, String treename, String treedescription, Boolean isarchived, Boolean treestatus, Boolean isdeleted) {
+    public Tree(String treeid, String treename, String treedescription, Boolean isarchived, Boolean treestatus, Boolean isdeleted, String treeimage) {
         this.treeid = treeid;
         this.treename = treename;
         this.treedescription = treedescription;
         this.isarchived = isarchived;
         this.treestatus = treestatus;
         this.isdeleted = isdeleted;
+        this.treeimage = treeimage;
     }
 
     public String getTreeid() {
@@ -143,11 +146,11 @@ public class Tree implements Serializable {
         this.isdeleted = isdeleted;
     }
 
-    public Serializable getTreeimage() {
+    public String getTreeimage() {
         return treeimage;
     }
 
-    public void setTreeimage(Serializable treeimage) {
+    public void setTreeimage(String treeimage) {
         this.treeimage = treeimage;
     }
 

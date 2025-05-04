@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author JiaQuann
+ * @author johno
  */
 @Entity
 @Table(name = "THREAD")
@@ -77,6 +77,8 @@ public class Thread implements Serializable {
     private List<Threadimage> threadimageList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "threadid")
     private List<Threadcomment> threadcommentList;
+    @OneToMany(mappedBy = "threadid")
+    private List<Reportcontent> reportcontentList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "thread")
     private List<Threadvote> threadvoteList;
     @JoinColumn(name = "THREADCATEGORYID", referencedColumnName = "THREADCATEGORYID")
@@ -175,6 +177,15 @@ public class Thread implements Serializable {
 
     public void setThreadcommentList(List<Threadcomment> threadcommentList) {
         this.threadcommentList = threadcommentList;
+    }
+
+    @XmlTransient
+    public List<Reportcontent> getReportcontentList() {
+        return reportcontentList;
+    }
+
+    public void setReportcontentList(List<Reportcontent> reportcontentList) {
+        this.reportcontentList = reportcontentList;
     }
 
     @XmlTransient

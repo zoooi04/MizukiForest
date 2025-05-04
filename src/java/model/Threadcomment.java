@@ -5,6 +5,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -17,6 +18,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -24,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author JiaQuann
+ * @author johno
  */
 @Entity
 @Table(name = "THREADCOMMENT")
@@ -32,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Threadcomment.findAll", query = "SELECT t FROM Threadcomment t"),
     @NamedQuery(name = "Threadcomment.findByThreadcommentid", query = "SELECT t FROM Threadcomment t WHERE t.threadcommentid = :threadcommentid"),
+    @NamedQuery(name = "Threadcomment.findByPostdatetime", query = "SELECT t FROM Threadcomment t WHERE t.postdatetime = :postdatetime"),
     @NamedQuery(name = "Threadcomment.findByContent", query = "SELECT t FROM Threadcomment t WHERE t.content = :content"),
     @NamedQuery(name = "Threadcomment.findByUpvote", query = "SELECT t FROM Threadcomment t WHERE t.upvote = :upvote"),
     @NamedQuery(name = "Threadcomment.findByDownvote", query = "SELECT t FROM Threadcomment t WHERE t.downvote = :downvote"),
@@ -45,6 +49,11 @@ public class Threadcomment implements Serializable {
     @Size(min = 1, max = 8)
     @Column(name = "THREADCOMMENTID")
     private String threadcommentid;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "POSTDATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date postdatetime;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 500)
@@ -73,6 +82,8 @@ public class Threadcomment implements Serializable {
     @JoinColumn(name = "USERID", referencedColumnName = "USERID")
     @ManyToOne(optional = false)
     private Users userid;
+    @OneToMany(mappedBy = "threadcommentid")
+    private List<Reportcontent> reportcontentList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "threadcomment")
     private List<Commentvote> commentvoteList;
 
@@ -83,8 +94,9 @@ public class Threadcomment implements Serializable {
         this.threadcommentid = threadcommentid;
     }
 
-    public Threadcomment(String threadcommentid, String content, int upvote, int downvote, Boolean isdeleted) {
+    public Threadcomment(String threadcommentid, Date postdatetime, String content, int upvote, int downvote, Boolean isdeleted) {
         this.threadcommentid = threadcommentid;
+        this.postdatetime = postdatetime;
         this.content = content;
         this.upvote = upvote;
         this.downvote = downvote;
@@ -97,6 +109,14 @@ public class Threadcomment implements Serializable {
 
     public void setThreadcommentid(String threadcommentid) {
         this.threadcommentid = threadcommentid;
+    }
+
+    public Date getPostdatetime() {
+        return postdatetime;
+    }
+
+    public void setPostdatetime(Date postdatetime) {
+        this.postdatetime = postdatetime;
     }
 
     public String getContent() {
@@ -162,6 +182,15 @@ public class Threadcomment implements Serializable {
 
     public void setUserid(Users userid) {
         this.userid = userid;
+    }
+
+    @XmlTransient
+    public List<Reportcontent> getReportcontentList() {
+        return reportcontentList;
+    }
+
+    public void setReportcontentList(List<Reportcontent> reportcontentList) {
+        this.reportcontentList = reportcontentList;
     }
 
     @XmlTransient

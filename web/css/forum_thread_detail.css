@@ -259,3 +259,205 @@
 .back-link:hover {
     color: #cecece;
 }
+
+/* Popup Styles */
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #121212; /* Solid dark background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.popup-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--text-color);
+}
+
+.close-popup {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.close-popup:hover {
+    color: var(--text-color);
+}
+
+.popup-body {
+    padding: 1rem;
+}
+
+.popup-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    gap: 0.5rem;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Buttons */
+.btn-cancel, 
+.btn-confirm {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-cancel {
+    background-color: var(--button-secondary-bg);
+    color: var(--button-secondary-text);
+}
+
+.btn-confirm {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+/* User Info in Edit Form */
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.user-avatar-small {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+/* Reply Form Styles */
+.reply-form {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    background-color: var(--bg-secondary);
+    border-radius: 4px;
+}
+
+.reply-form textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    resize: vertical;
+}
+
+.reply-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.btn-cancel-reply, 
+.btn-send-reply {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-cancel-reply {
+    background-color: var(--button-secondary-bg);
+    color: var(--button-secondary-text);
+}
+
+.btn-send-reply {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Image Upload */
+.image-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.preview-image {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 4px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.file-upload-btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: var(--button-secondary-bg);
+    color: var(--button-secondary-text);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.file-upload-btn:hover {
+    background-color: var(--button-secondary-hover);
+}

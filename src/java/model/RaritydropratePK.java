@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author JiaQuann
+ * @author johno
  */
 @Embeddable
 public class RaritydropratePK implements Serializable {

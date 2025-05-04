@@ -10,7 +10,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -22,7 +21,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author JiaQuann
+ * @author johno
  */
 @Entity
 @Table(name = "ITEM")
@@ -35,7 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Item.findByItemstatus", query = "SELECT i FROM Item i WHERE i.itemstatus = :itemstatus"),
     @NamedQuery(name = "Item.findByItemcost", query = "SELECT i FROM Item i WHERE i.itemcost = :itemcost"),
     @NamedQuery(name = "Item.findByIsarchived", query = "SELECT i FROM Item i WHERE i.isarchived = :isarchived"),
-    @NamedQuery(name = "Item.findByIsdeleted", query = "SELECT i FROM Item i WHERE i.isdeleted = :isdeleted")})
+    @NamedQuery(name = "Item.findByIsdeleted", query = "SELECT i FROM Item i WHERE i.isdeleted = :isdeleted"),
+    @NamedQuery(name = "Item.findByItemimage", query = "SELECT i FROM Item i WHERE i.itemimage = :itemimage")})
 public class Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -71,9 +71,11 @@ public class Item implements Serializable {
     @NotNull
     @Column(name = "ISDELETED")
     private Boolean isdeleted;
-    @Lob
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "ITEMIMAGE")
-    private Serializable itemimage;
+    private String itemimage;
     @OneToMany(mappedBy = "itemid")
     private List<Achievementreward> achievementrewardList;
     @OneToMany(mappedBy = "itemid")
@@ -90,7 +92,7 @@ public class Item implements Serializable {
         this.itemid = itemid;
     }
 
-    public Item(String itemid, String itemname, String itemtype, Boolean itemstatus, int itemcost, Boolean isarchived, Boolean isdeleted) {
+    public Item(String itemid, String itemname, String itemtype, Boolean itemstatus, int itemcost, Boolean isarchived, Boolean isdeleted, String itemimage) {
         this.itemid = itemid;
         this.itemname = itemname;
         this.itemtype = itemtype;
@@ -98,6 +100,7 @@ public class Item implements Serializable {
         this.itemcost = itemcost;
         this.isarchived = isarchived;
         this.isdeleted = isdeleted;
+        this.itemimage = itemimage;
     }
 
     public String getItemid() {
@@ -156,11 +159,11 @@ public class Item implements Serializable {
         this.isdeleted = isdeleted;
     }
 
-    public Serializable getItemimage() {
+    public String getItemimage() {
         return itemimage;
     }
 
-    public void setItemimage(Serializable itemimage) {
+    public void setItemimage(String itemimage) {
         this.itemimage = itemimage;
     }
 

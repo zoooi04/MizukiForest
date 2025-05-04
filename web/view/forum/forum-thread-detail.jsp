@@ -171,5 +171,5 @@
 
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="../js/mizukibase.js"></script>
-    <script src="<%= request.getContextPath()%>/js/forum_thread_details.js"></script>
+    <script src="<%= request.getContextPath()%>/js/forum_thread_detail.js"></script>
 </html>

@@ -11,7 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -23,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author JiaQuann
+ * @author johno
  */
 @Entity
 @Table(name = "BADGE")
@@ -32,7 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Badge.findAll", query = "SELECT b FROM Badge b"),
     @NamedQuery(name = "Badge.findByBadgeid", query = "SELECT b FROM Badge b WHERE b.badgeid = :badgeid"),
     @NamedQuery(name = "Badge.findByBadgename", query = "SELECT b FROM Badge b WHERE b.badgename = :badgename"),
-    @NamedQuery(name = "Badge.findByIsdeleted", query = "SELECT b FROM Badge b WHERE b.isdeleted = :isdeleted")})
+    @NamedQuery(name = "Badge.findByIsdeleted", query = "SELECT b FROM Badge b WHERE b.isdeleted = :isdeleted"),
+    @NamedQuery(name = "Badge.findByBadgeimage", query = "SELECT b FROM Badge b WHERE b.badgeimage = :badgeimage")})
 public class Badge implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,9 +51,11 @@ public class Badge implements Serializable {
     @NotNull
     @Column(name = "ISDELETED")
     private Boolean isdeleted;
-    @Lob
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "BADGEIMAGE")
-    private Serializable badgeimage;
+    private String badgeimage;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "badgeid")
     private List<Achievementcategory> achievementcategoryList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "badge")
@@ -66,10 +68,11 @@ public class Badge implements Serializable {
         this.badgeid = badgeid;
     }
 
-    public Badge(String badgeid, String badgename, Boolean isdeleted) {
+    public Badge(String badgeid, String badgename, Boolean isdeleted, String badgeimage) {
         this.badgeid = badgeid;
         this.badgename = badgename;
         this.isdeleted = isdeleted;
+        this.badgeimage = badgeimage;
     }
 
     public String getBadgeid() {
@@ -96,11 +99,11 @@ public class Badge implements Serializable {
         this.isdeleted = isdeleted;
     }
 
-    public Serializable getBadgeimage() {
+    public String getBadgeimage() {
         return badgeimage;
     }
 
-    public void setBadgeimage(Serializable badgeimage) {
+    public void setBadgeimage(String badgeimage) {
         this.badgeimage = badgeimage;
     }
 

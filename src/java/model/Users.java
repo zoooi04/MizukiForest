@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author JiaQuann
+ * @author johno
  */
 @Entity
 @Table(name = "USERS")
@@ -137,6 +137,8 @@ public class Users implements Serializable {
     private List<Token> tokenList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid")
     private List<Userinventoryitem> userinventoryitemList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid")
+    private List<Reportcontent> reportcontentList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "users")
     private List<Threadvote> threadvoteList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "users")
@@ -393,6 +395,15 @@ public class Users implements Serializable {
 
     public void setUserinventoryitemList(List<Userinventoryitem> userinventoryitemList) {
         this.userinventoryitemList = userinventoryitemList;
+    }
+
+    @XmlTransient
+    public List<Reportcontent> getReportcontentList() {
+        return reportcontentList;
+    }
+
+    public void setReportcontentList(List<Reportcontent> reportcontentList) {
+        this.reportcontentList = reportcontentList;
     }
 
     @XmlTransient
