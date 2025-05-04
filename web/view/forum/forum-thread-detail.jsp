@@ -23,7 +23,7 @@
             <div class="thread-container">
                 <!-- Back to Forum Link -->
                 <a href="../../ViewForumEntryServlet" class="back-link">
-                    <i class="fas fa-arrow-left"></i> Back to Forum
+                    <i class="bi bi-reply"></i> Back to Forum
                 </a>
 
                 <%-- Display error message if present --%>
