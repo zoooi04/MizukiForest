@@ -78,27 +78,35 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
-});
+});     
 
-// Ensure the commentId is included in the edit form
+// Retrieve categories from meta tag and populate the dropdown
 function openEditPopup(button) {
     const isThreadEdit = button.closest('.thread-actions') !== null;
-    let title = '', description = '', category = 'General', imageSrc = '', commentId = '';
+    let title = '', description = '', category = '', commentId = '', threadId = '';
 
     if (isThreadEdit) {
         const threadContainer = button.closest('.thread-container');
         title = threadContainer.querySelector('h1').textContent;
         description = threadContainer.querySelector('.thread-content p').textContent;
-        const categoryText = threadContainer.querySelector('.thread-meta span:nth-child(3)').textContent;
-        category = categoryText.replace('Category: ', '');
-        const threadImage = threadContainer.querySelector('.thread-image');
-        if (threadImage)
-            imageSrc = threadImage.src;
+        category = threadContainer.querySelector('.thread-meta span:nth-child(3)').textContent.replace('Category: ', '');
+        threadId = document.querySelector('meta[name="selected-threadid"]').content;
     } else {
         const commentContainer = button.closest('.comment-content');
         description = commentContainer.querySelector('.comment-text').textContent;
         commentId = commentContainer.closest('.comment-item').dataset.commentId;
+        threadId = document.querySelector('meta[name="selected-threadid"]').content;
     }
+
+    // Retrieve categories from meta tag
+    const categoriesMeta = document.querySelector('meta[name="forumThreadCategoryList"]').content;
+    const categories = JSON.parse(categoriesMeta);
+
+    const categoryOptions = categories.map(cat => `
+        <option value="${cat.threadcategoryid}" ${cat.threadcategoryname === category ? 'selected' : ''}>
+            ${cat.threadcategoryname}
+        </option>
+    `).join('');
 
     const popupHTML = `
         <form class="popup-container" action="../../EditForumThreadCommentServlet" method="POST">
@@ -108,25 +116,28 @@ function openEditPopup(button) {
                     <button type="button" class="close-popup">&times;</button>
                 </div>
                 <div class="popup-body">
-                    <div class="form-group">
-                        <label for="edit-description">${isThreadEdit ? 'Description' : 'Comment'}</label>
-                        <textarea id="edit-description" name="description" required>${description}</textarea>
-                    </div>
                     ${isThreadEdit ? `
                         <div class="form-group">
                             <label for="edit-title">Title</label>
                             <input type="text" id="edit-title" name="title" value="${title}" required>
                         </div>
                         <div class="form-group">
+                            <label for="edit-description">Description</label>
+                            <textarea id="edit-description" name="description" required>${description}</textarea>
+                        </div>
+                        <div class="form-group">
                             <label for="edit-category">Category</label>
                             <select id="edit-category" name="category">
-                                <option value="General" ${category === 'General' ? 'selected' : ''}>General</option>
-                                <option value="Question" ${category === 'Question' ? 'selected' : ''}>Question</option>
-                                <option value="Discussion" ${category === 'Discussion' ? 'selected' : ''}>Discussion</option>
-                                <option value="Announcement" ${category === 'Announcement' ? 'selected' : ''}>Announcement</option>
+                                ${categoryOptions}
                             </select>
                         </div>
-                    ` : ''}
+                    ` : `
+                        <div class="form-group">
+                            <label for="edit-description">Comment</label>
+                            <textarea id="edit-description" name="description" required>${description}</textarea>
+                        </div>
+                    `}
+                    <input type="hidden" name="threadId" value="${threadId}">
                     ${!isThreadEdit ? `
                         <input type="hidden" name="commentId" value="${commentId}">
                     ` : ''}

@@ -12,7 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
+import model.Threadcategory;
+import model.Threadcomment;
 import model.forumService.ThreadCommentService;
+import model.forumService.ThreadService;
 
 /**
  *
@@ -79,8 +82,11 @@ public class EditForumThreadCommentServlet extends HttpServlet {
         // Extract parameters from the request
         String commentId = request.getParameter("commentId");
         String newDescription = request.getParameter("description");
+        String threadTitle = request.getParameter("title");
+        String threadCategory = request.getParameter("category");
+        String threadId = request.getParameter("threadId");
 
-        if (commentId == null || commentId.isEmpty() || newDescription == null || newDescription.isEmpty()) {
+        if ((commentId == null || commentId.isEmpty()) && (threadId == null || threadId.isEmpty())) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing required parameters.");
             return;
         }
@@ -89,30 +95,70 @@ public class EditForumThreadCommentServlet extends HttpServlet {
             // Log variables for debugging
             System.out.println("Comment ID: " + commentId);
             System.out.println("New Description: " + newDescription);
+            System.out.println("Thread Title: " + threadTitle);
+            System.out.println("Thread Category: " + threadCategory);
+            System.out.println("Thread ID: " + threadId);
 
-            // Initialize service class
+            // Initialize service classes
             ThreadCommentService commentService = new ThreadCommentService(entityManager);
+            ThreadService threadService = new ThreadService(entityManager);
 
-            // Check if the comment exists
-            model.Threadcomment comment = entityManager.find(model.Threadcomment.class, commentId);
-            System.out.println("Comment Object: " + comment);
-            if (comment == null) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Comment not found.");
-                return;
+            if (commentId != null && !commentId.isEmpty()) {
+                // Update thread comment
+                Threadcomment comment = entityManager.find(Threadcomment.class, commentId);
+                System.out.println("Comment Object: " + comment);
+                if (comment == null) {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Comment not found.");
+                    return;
+                }
+
+                commentService.updateComment(commentId, newDescription);
+            } else {
+                // Update thread details
+                model.Thread thread = entityManager.find(model.Thread.class, threadId);
+                if (thread == null) {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Thread not found.");
+                    return;
+                }
+
+                if (threadTitle != null && !threadTitle.isEmpty()) {
+                    thread.setThreadtitle(threadTitle);
+                }
+
+                if (threadCategory != null && !threadCategory.isEmpty()) {
+                    Threadcategory category = entityManager.find(Threadcategory.class, threadCategory);
+                    if (category != null) {
+                        thread.setThreadcategoryid(category);
+                    } else {
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid thread category.");
+                        return;
+                    }
+                }
+
+                if (newDescription != null && !newDescription.isEmpty()) {
+                    thread.setThreaddescription(newDescription);
+                }
+
+                // Log the updated thread for debugging
+                System.out.println("Updated Thread: " + thread);
+
+                // Use the service to update the thread
+                boolean isUpdated = threadService.updateThread(thread);
+                if (!isUpdated) {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to update thread.");
+                    return;
+                }
             }
-
-            // Update the description for the comment
-            commentService.updateComment(commentId, newDescription);
 
             // Send success response
 //            response.setStatus(HttpServletResponse.SC_OK);
-//            response.getWriter().write("Comment updated successfully.");
-
+//            response.getWriter().write("Update successful.");
+            
             // redirect
-            String redirectURL = request.getContextPath() + "/ViewForumDetailServlet?thread_id=" + commentService.findThreadIdByCommentId(commentId);
+            String redirectURL = request.getContextPath() + "/ViewForumDetailServlet?thread_id=" + threadId;
             response.sendRedirect(redirectURL);
         } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while updating the comment.");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while updating.");
             e.printStackTrace();
         }
     }

@@ -139,12 +139,8 @@ public class ThreadService {
         if (existingThread != null && !existingThread.getIsdeleted()) {
             existingThread.setThreadtitle(updatedThread.getThreadtitle());
             existingThread.setThreaddescription(updatedThread.getThreaddescription());
-            existingThread.setUpvote(updatedThread.getUpvote());
-            existingThread.setDownvote(updatedThread.getDownvote());
-            existingThread.setSharecount(updatedThread.getSharecount());
-            existingThread.setUserid(updatedThread.getUserid());
             existingThread.setThreadcategoryid(updatedThread.getThreadcategoryid());
-            mgr.merge(existingThread);
+            mgr.merge(existingThread); // Ensure changes are merged
             return true;
         }
         return false;

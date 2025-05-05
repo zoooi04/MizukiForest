@@ -72,7 +72,7 @@ public class ViewForumEntryServlet extends HttpServlet {
 
             // Set filtered thread list and category list in session
             session.setAttribute("forumThreadList", threadList);
-            session.setAttribute("forumThreadCategoryList", threadCategoryList);
+            session.setAttribute("forumThreadCategoryList", threadCategoryList); 
 
             // Store the selected category, vote, and threadType in the session
             session.setAttribute("selectedCategory", category);

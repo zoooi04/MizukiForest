@@ -9,6 +9,18 @@
         <meta name="current-userid" content="<%= ((model.Users) session.getAttribute("currentUser")).getUserid()%>">
         <meta name="selected-threadid" content="<%= session.getAttribute("selectedThreadID")%>">
         <meta name="comment-id-reply-to" content="<%= request.getParameter("commentIdReplyTo") != null ? request.getParameter("commentIdReplyTo") : ""%>">
+        <meta name="forumThreadCategoryList" content='[
+              <%
+                  List<model.Threadcategory> categories = (List<model.Threadcategory>) session.getAttribute("forumThreadCategoryList");
+                  if (categories != null) {
+                      for (int i = 0; i < categories.size(); i++) {
+                          model.Threadcategory category = categories.get(i);
+              %>{"threadcategoryid": "<%= category.getThreadcategoryid()%>", "threadcategoryname": "<%= category.getThreadcategoryname()%>"}<%= (i < categories.size() - 1) ? "," : ""%>
+              <%
+                      }
+                  }
+              %>
+              ]'>
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum/forum_thread_list.css">
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum/forum_thread_detail.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">

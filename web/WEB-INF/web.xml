@@ -36,6 +36,10 @@
         <servlet-name>EditForumThreadCommentServlet</servlet-name>
         <servlet-class>control.forum.EditForumThreadCommentServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetThreadCategoriesServlet</servlet-name>
+        <servlet-class>control.forum.GetThreadCategoriesServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewDiaryEntryServlet</servlet-name>
         <url-pattern>/ViewDiaryEntryServlet</url-pattern>
@@ -71,6 +75,10 @@
     <servlet-mapping>
         <servlet-name>EditForumThreadCommentServlet</servlet-name>
         <url-pattern>/EditForumThreadCommentServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetThreadCategoriesServlet</servlet-name>
+        <url-pattern>/GetThreadCategoriesServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
