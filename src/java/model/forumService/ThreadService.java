@@ -7,8 +7,10 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import model.Thread;
 import model.Threadcategory;
 import model.Users;
+import model.Threadvote;
 
 public class ThreadService {
     @PersistenceContext
@@ -32,9 +34,12 @@ public class ThreadService {
         }
     }
 
+    // Log the persistence process
     public void addThread(model.Thread thread) {
         try {
+            System.out.println("Persisting thread: " + thread);
             mgr.persist(thread);
+            System.out.println("Thread persisted successfully.");
         } catch (ConstraintViolationException e) {
             for (ConstraintViolation<?> violation : e.getConstraintViolations()) {
                 System.out.println("Validation error: " + violation.getPropertyPath() + " - " + violation.getMessage());
@@ -44,8 +49,13 @@ public class ThreadService {
     }
 
     public model.Thread findThreadById(String threadId) {
-        model.Thread thread = mgr.find(model.Thread.class, threadId);
-        return thread != null && !thread.getIsdeleted() ? thread : null;
+        return mgr.find(model.Thread.class, threadId);
+    }
+
+    public void saveThread(Thread thread) {
+        mgr.getTransaction().begin();
+        mgr.merge(thread);
+        mgr.getTransaction().commit();
     }
 
     public List<model.Thread> findThreadsByUser(Users user) {
@@ -145,5 +155,41 @@ public class ThreadService {
             return true;
         }
         return false;
+    }
+
+    public Threadvote findThreadVote(String userId, String threadId) {
+        try {
+            return mgr.createQuery("SELECT v FROM Threadvote v WHERE v.threadvotePK.userid = :userId AND v.threadvotePK.threadid = :threadId", Threadvote.class)
+                    .setParameter("userId", userId)
+                    .setParameter("threadId", threadId)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public void castThreadVote(Threadvote threadVote) {
+        mgr.getTransaction().begin();
+        mgr.persist(threadVote);
+        mgr.getTransaction().commit();
+    }
+
+    public void removeThreadVote(String threadId, String userId) {
+        Threadvote vote = findThreadVote(userId, threadId);
+        if (vote != null) {
+            mgr.getTransaction().begin();
+            mgr.remove(vote);
+            mgr.getTransaction().commit();
+        }
+    }
+
+    public void updateThreadVoteType(String threadId, String userId, boolean voteType) {
+        Threadvote vote = findThreadVote(userId, threadId);
+        if (vote != null) {
+            mgr.getTransaction().begin();
+            vote.setVotetype(voteType);
+            mgr.merge(vote);
+            mgr.getTransaction().commit();
+        }
     }
 }

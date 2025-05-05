@@ -97,4 +97,36 @@ public class ThreadCommentService {
     public Threadcomment findCommentById(String commentId) {
         return mgr.find(Threadcomment.class, commentId);
     }
+
+    public void incrementUpvote(String commentId) {
+        Threadcomment comment = mgr.find(Threadcomment.class, commentId);
+        if (comment != null && !comment.getIsdeleted()) {
+            comment.setUpvote(comment.getUpvote() + 1);
+            mgr.merge(comment);
+        }
+    }
+
+    public void decrementUpvote(String commentId) {
+        Threadcomment comment = mgr.find(Threadcomment.class, commentId);
+        if (comment != null && !comment.getIsdeleted()) {
+            comment.setUpvote(comment.getUpvote() - 1);
+            mgr.merge(comment);
+        }
+    }
+
+    public void incrementDownvote(String commentId) {
+        Threadcomment comment = mgr.find(Threadcomment.class, commentId);
+        if (comment != null && !comment.getIsdeleted()) {
+            comment.setDownvote(comment.getDownvote() + 1);
+            mgr.merge(comment);
+        }
+    }
+
+    public void decrementDownvote(String commentId) {
+        Threadcomment comment = mgr.find(Threadcomment.class, commentId);
+        if (comment != null && !comment.getIsdeleted()) {
+            comment.setDownvote(comment.getDownvote() - 1);
+            mgr.merge(comment);
+        }
+    }
 }

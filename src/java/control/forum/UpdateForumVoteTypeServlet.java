@@ -17,8 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Commentvote;
 import model.Threadcomment;
+import model.Thread;
+import model.Threadvote;
 import model.forumService.CommentVoteService;
 import model.forumService.ThreadCommentService;
+import model.forumService.ThreadService;
 
 /**
  *
@@ -30,7 +33,7 @@ public class UpdateForumVoteTypeServlet extends HttpServlet {
     private EntityManager entityManager;
 
     private EntityManager getEntityManager(HttpServletRequest request) {
-        EntityManager em = (EntityManager) getServletContext().getAttribute("em");
+        EntityManager em = (EntityManager) request.getServletContext().getAttribute("em");
         if (em == null) {
             throw new IllegalStateException("EntityManager is not initialized in the servlet context.");
         }
@@ -45,7 +48,6 @@ public class UpdateForumVoteTypeServlet extends HttpServlet {
 
         EntityManager em = getEntityManager(request);
         if (em == null) {
-            System.out.println("Error: EntityManager is null");
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.write("{\"error\": \"EntityManager not initialized\"}");
             return;
@@ -59,19 +61,17 @@ public class UpdateForumVoteTypeServlet extends HttpServlet {
         }
         String jsonString = jsonBuilder.toString();
 
-        System.out.println("Raw JSON payload: " + jsonString);
-
-        // Improved JSON parsing logic
-        boolean voteType = false;
-        String id = null;
+        boolean voteType;
+        String id;
+        boolean isThreadVote;
         try {
             voteType = jsonString.contains("\"voteType\":true");
+            isThreadVote = jsonString.contains("\"isThreadVote\":true");
 
             int idStartIndex = jsonString.indexOf("\"id\":\"") + 6;
             int idEndIndex = jsonString.indexOf("\"", idStartIndex);
             id = jsonString.substring(idStartIndex, idEndIndex);
         } catch (Exception e) {
-            System.out.println("Error parsing JSON: " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             out.write("{\"error\": \"Invalid JSON format\"}");
             return;
@@ -79,46 +79,115 @@ public class UpdateForumVoteTypeServlet extends HttpServlet {
 
         String userId = ((model.Users) request.getSession().getAttribute("currentUser")).getUserid();
 
-        CommentVoteService commentVoteService = new CommentVoteService(entityManager);
+        CommentVoteService commentVoteService = new CommentVoteService(em);
+        ThreadCommentService threadCommentService = new ThreadCommentService(em);
+        ThreadService threadService = new ThreadService(em);
 
         if (id == null || id.isEmpty()) {
-            System.out.println("Error: ID is null or empty");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             out.write("{\"error\": \"Invalid ID\"}");
             return;
         }
 
-        System.out.println("Processing comment vote");
-        Commentvote existingVoteType = commentVoteService.findVote(userId, id);
-        System.out.println("Existing comment vote type: " + existingVoteType);
+        if (isThreadVote) {
+            model.Thread thread = threadService.findThreadById(id);
 
-        if (existingVoteType == null) {
-            commentVoteService.castVote(new model.Commentvote(new model.CommentvotePK(id, userId), voteType));
-            System.out.println("New comment vote cast: " + voteType);
-        } else if (existingVoteType != null && existingVoteType.getVotetype() == voteType) {
-            commentVoteService.removeVote(id, userId);
-            System.out.println("Comment vote removed.");
-        } else if (existingVoteType != null) {
-            commentVoteService.updateVoteType(id, userId, voteType);
-            System.out.println("Comment vote updated to: " + voteType);
+            if (thread == null) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.write("{\"error\": \"Thread not found\"}");
+                return;
+            }
+
+            Threadvote existingVote = threadService.findThreadVote(userId, id);
+
+            if (existingVote == null) {
+                // Insert new vote
+                threadService.castThreadVote(new Threadvote(new model.ThreadvotePK(id, userId), voteType));
+                if (voteType) {
+                    thread.setUpvote(thread.getUpvote() + 1);
+                } else {
+                    thread.setDownvote(thread.getDownvote() + 1);
+                }
+            } else if (existingVote.getVotetype() == voteType) {
+                // Unvote: remove the vote
+                threadService.removeThreadVote(id, userId);
+                if (voteType) {
+                    thread.setUpvote(thread.getUpvote() - 1);
+                } else {
+                    thread.setDownvote(thread.getDownvote() - 1);
+                }
+            } else {
+                // Change vote type
+                threadService.updateThreadVoteType(id, userId, voteType);
+                if (voteType) {
+                    thread.setUpvote(thread.getUpvote() + 1);
+                    thread.setDownvote(thread.getDownvote() - 1);
+                } else {
+                    thread.setDownvote(thread.getDownvote() + 1);
+                    thread.setUpvote(thread.getUpvote() - 1);
+                }
+            }
+
+            threadService.saveThread(thread);
+
+            request.getSession().setAttribute("threadVoteType", voteType);
+
+            out.write("{" +
+                    "\"upvotes\": " + thread.getUpvote() + "," +
+                    "\"downvotes\": " + thread.getDownvote() + "," +
+                    "\"userVoteType\": " + voteType +
+                    "}");
         } else {
+            Commentvote existingVote = commentVoteService.findVote(userId, id);
 
+            if (existingVote == null) {
+                // Insert new vote
+                commentVoteService.castVote(new Commentvote(new model.CommentvotePK(id, userId), voteType));
+                if (voteType) {
+                    threadCommentService.incrementUpvote(id);
+                } else {
+                    threadCommentService.incrementDownvote(id);
+                }
+            } else if (existingVote.getVotetype() == voteType) {
+                // Unvote: remove the vote
+                commentVoteService.removeVote(id, userId);
+                if (voteType) {
+                    threadCommentService.decrementUpvote(id);
+                } else {
+                    threadCommentService.decrementDownvote(id);
+                }
+            } else {
+                // Change vote type
+                commentVoteService.updateVoteType(id, userId, voteType);
+                if (voteType) {
+                    threadCommentService.incrementUpvote(id);
+                    threadCommentService.decrementDownvote(id);
+                } else {
+                    threadCommentService.incrementDownvote(id);
+                    threadCommentService.decrementUpvote(id);
+                }
+            }
+
+            Threadcomment comment = threadCommentService.findCommentById(id);
+            if (comment == null) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.write("{\"error\": \"Comment not found\"}");
+                return;
+            }
+
+            Map<String, Boolean> commentVotes = (Map<String, Boolean>) request.getSession().getAttribute("commentVotes");
+            if (commentVotes == null) {
+                commentVotes = new HashMap<>();
+            }
+            commentVotes.put(id, voteType);
+            request.getSession().setAttribute("commentVotes", commentVotes);
+
+            out.write("{" +
+                    "\"upvotes\": " + comment.getUpvote() + "," +
+                    "\"downvotes\": " + comment.getDownvote() + "," +
+                    "\"userVoteType\": " + voteType +
+                    "}");
         }
-
-        ThreadCommentService threadCommentService = new ThreadCommentService(entityManager);
-        Threadcomment comment = threadCommentService.findCommentById(id);
-        if (comment == null) {
-            System.out.println("Error: Threadcomment not found for ID: " + id);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            out.write("{\"error\": \"Comment not found\"}");
-            return;
-        }
-
-        out.write("{"
-                + "\"upvotes\": " + comment.getUpvote() + ","
-                + "\"downvotes\": " + comment.getDownvote() + ","
-                + "\"userVoteType\": " + voteType
-                + "}");
 
         out.close();
     }

@@ -33,56 +33,31 @@
                 <% }%>
 
                 <div class="new-thread-container">
-                    <form id="newThreadForm" action="<%= request.getContextPath()%>/AddForumThreadServlet" method="post" enctype="multipart/form-data">
+                    <form id="newThreadForm" action="../../AddForumThreadServlet" method="post">
                         <div class="form-group">
                             <label for="threadTitle">Title</label>
-                            <input type="text" id="threadTitle" name="threadTitle" required placeholder="Enter thread title" value="<%= request.getParameter("title") != null ? request.getParameter("title") : ""%>">
+                            <input type="text" id="threadTitle" name="threadTitle" placeholder="Enter thread title" required>
                         </div>
 
                         <div class="form-group">
                             <label for="threadDescription">Description</label>
-                            <textarea id="threadDescription" name="threadDescription" required placeholder="Enter thread description"><%= request.getParameter("description") != null ? request.getParameter("description") : ""%></textarea>
+                            <textarea id="threadDescription" name="threadDescription" placeholder="Enter thread description" required></textarea>
                         </div>
 
                         <div class="form-group">
                             <label for="threadCategory">Category</label>
                             <select id="threadCategory" name="categoryId" required>
                                 <option value="" disabled selected>Select a category</option>
-                                <% 
-                                    List<Threadcategory> threadCategoryList = (List<Threadcategory>) session.getAttribute("forumThreadCategoryList");
-                                    String selectedCategory = request.getParameter("categoryId");
-                                    if (threadCategoryList != null) {
-                                        for (Threadcategory threadCategory : threadCategoryList) {
-                                            String threadCategoryId = threadCategory.getThreadcategoryid();
-                                            String threadCategoryName = threadCategory.getThreadcategoryname();
-                                            boolean isSelected = threadCategoryId.equals(selectedCategory);
-                                %>
-                                <option value="<%= threadCategoryId%>" <%= isSelected ? "selected" : ""%>>
-                                    <%= threadCategoryName%>
-                                </option>
-                                <%     }
-                                    }%>
+                                <% List<Threadcategory> categories = (List<Threadcategory>) session.getAttribute("forumThreadCategoryList");
+                                   if (categories != null) {
+                                       for (Threadcategory category : categories) { %>
+                                           <option value="<%= category.getThreadcategoryid() %>"><%= category.getThreadcategoryname() %></option>
+                                       <% }
+                                   } %>
                             </select>
                         </div>
 
-<!--                        <div class="form-group">
-                            <label>Images</label>
-                            <div class="image-upload-container">
-                                <div class="upload-area" id="uploadArea">
-                                    <i class="fas fa-cloud-upload-alt"></i>
-                                    <p>Drag & drop images here or</p>
-                                    <label for="imageUpload" class="file-upload-btn">Select Images</label>
-                                    <input type="file" id="imageUpload" name="threadImages" accept="image/*" multiple>
-                                </div>
-
-                                <div class="image-preview-container" id="imagePreviewContainer">
-                                     Preview images will be dynamically added here 
-                                </div>
-                            </div>
-                        </div>-->
-
                         <div class="form-actions">
-                            <button type="button" class="btn-cancel" onclick="window.location.href = '<%= request.getContextPath()%>/view/forum/forum-thread-list.jsp?threadType=my'">Cancel</button>
                             <button type="submit" class="btn-create">Create Thread</button>
                         </div>
                     </form>
@@ -92,4 +67,13 @@
 
     </body>
     <script src="<%= request.getContextPath()%>/js/forum/forum_new_thread.js"></script>
+    <script>
+        document.getElementById('newThreadForm').addEventListener('submit', function(event) {
+            const titleInput = document.getElementById('threadTitle');
+            if (!titleInput.value.trim()) {
+                alert('Thread title is required.');
+                event.preventDefault();
+            }
+        });
+    </script>
 </html>

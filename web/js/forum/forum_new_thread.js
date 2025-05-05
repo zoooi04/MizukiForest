@@ -127,56 +127,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Form validation
-    form.addEventListener('submit', function(e) {
-        let isValid = true;
-        
-        // Validate title
-        const titleInput = document.getElementById('threadTitle');
-        if (!titleInput.value.trim()) {
-            markInvalid(titleInput, 'Please enter a title');
-            isValid = false;
-        } else {
-            clearInvalid(titleInput);
-        }
-        
-        // Validate description
-        const descInput = document.getElementById('threadDescription');
-        if (!descInput.value.trim()) {
-            markInvalid(descInput, 'Please enter a description');
-            isValid = false;
-        } else {
-            clearInvalid(descInput);
-        }
-        
-        if (!isValid) {
-            e.preventDefault();
+    document.getElementById('newThreadForm').addEventListener('submit', function(event) {
+        const title = document.getElementById('threadTitle').value.trim();
+        const description = document.getElementById('threadDescription').value.trim();
+        const category = document.getElementById('threadCategory').value;
+
+        if (!title) {
+            alert('Thread title is required.');
+            event.preventDefault();
+        } else if (!description) {
+            alert('Thread description is required.');
+            event.preventDefault();
+        } else if (!category) {
+            alert('Thread category is required.');
+            event.preventDefault();
         }
     });
-    
-    function markInvalid(element, message) {
-        const formGroup = element.closest('.form-group');
-        formGroup.classList.add('error');
-        
-        // Remove any existing error message
-        const existingError = formGroup.querySelector('.error-message');
-        if (existingError) {
-            existingError.remove();
-        }
-        
-        // Add error message
-        const errorMsg = document.createElement('div');
-        errorMsg.className = 'error-message';
-        errorMsg.textContent = message;
-        formGroup.appendChild(errorMsg);
-    }
-    
-    function clearInvalid(element) {
-        const formGroup = element.closest('.form-group');
-        formGroup.classList.remove('error');
-        
-        const existingError = formGroup.querySelector('.error-message');
-        if (existingError) {
-            existingError.remove();
-        }
-    }
 });
