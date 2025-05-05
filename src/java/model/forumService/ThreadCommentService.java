@@ -93,4 +93,8 @@ public class ThreadCommentService {
         }
         return null;
     }
+
+    public Threadcomment findCommentById(String commentId) {
+        return mgr.find(Threadcomment.class, commentId);
+    }
 }

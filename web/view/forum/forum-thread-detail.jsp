@@ -43,6 +43,15 @@
                     <i class="bi bi-reply"></i> Back to Forum
                 </a>
 
+                <%-- Display success message if present --%>
+                <% if (session.getAttribute("reportSuccessMessage") != null) { %>
+                <div class="alert alert-success">
+                    <%= session.getAttribute("reportSuccessMessage") %>
+                </div>
+                <%
+                    session.removeAttribute("reportSuccessMessage");
+                } %>
+
                 <%-- Display error message if present --%>
                 <% if (request.getAttribute("errorMessage") != null) {%>
                 <div class="error-message">
@@ -89,11 +98,11 @@
 
                     <div class="thread-actions">
                         <div class="action-group">
-                            <button class="action-btn">
+                            <button class="action-btn upvote" data-vote-type="true">
                                 <i class="<%= (session.getAttribute("threadVoteType") != null && (Boolean) session.getAttribute("threadVoteType")) ? "bi-hand-thumbs-up-fill" : "bi-hand-thumbs-up"%>"></i>
                                 <span><%= ((model.Thread) session.getAttribute("selectedThread")).getUpvote()%></span>
                             </button>
-                            <button class="action-btn">
+                            <button class="action-btn downvote" data-vote-type="false">
                                 <i class="bi <%= (session.getAttribute("threadVoteType") != null && !(Boolean) session.getAttribute("threadVoteType")) ? "bi-hand-thumbs-down-fill" : "bi-hand-thumbs-down"%>"></i>
                                 <span><%= ((model.Thread) session.getAttribute("selectedThread")).getDownvote()%></span>
                             </button>
@@ -156,11 +165,11 @@
                             </div>
                             <div class="comment-text"><%= comment.getContent()%></div>
                             <div class="comment-actions">
-                                <button class="action-btn">
+                                <button class="action-btn upvote" data-vote-type="true">
                                     <i class="bi <%= commentVotes != null && commentVotes.get(comment.getThreadcommentid()) != null && commentVotes.get(comment.getThreadcommentid()) ? "bi-hand-thumbs-up-fill" : "bi-hand-thumbs-up"%>"></i>
                                     <span><%= comment.getUpvote()%></span>
                                 </button>
-                                <button class="action-btn">
+                                <button class="action-btn downvote" data-vote-type="false">
                                     <i class="bi <%= commentVotes != null && commentVotes.get(comment.getThreadcommentid()) != null && !commentVotes.get(comment.getThreadcommentid()) ? "bi-hand-thumbs-down-fill" : "bi-hand-thumbs-down"%>"></i>
                                     <span><%= comment.getDownvote()%></span>
                                 </button>
@@ -212,11 +221,11 @@
                                         </div>
                                         <div class="comment-text"><%= reply.getContent()%></div>
                                         <div class="comment-actions">
-                                            <button class="action-btn">
+                                            <button class="action-btn upvote" data-vote-type="true">
                                                 <i class="bi <%= replyVotes != null && replyVotes.get(comment.getThreadcommentid()) != null && replyVotes.get(comment.getThreadcommentid()).get(reply.getThreadcommentid()) != null && replyVotes.get(comment.getThreadcommentid()).get(reply.getThreadcommentid()) ? "bi-hand-thumbs-up-fill" : "bi-hand-thumbs-up"%>"></i>
                                                 <span><%= reply.getUpvote()%></span>
                                             </button>
-                                            <button class="action-btn">
+                                            <button class="action-btn downvote" data-vote-type="false">
                                                 <i class="bi <%= replyVotes != null && replyVotes.get(comment.getThreadcommentid()) != null && replyVotes.get(comment.getThreadcommentid()).get(reply.getThreadcommentid()) != null && !replyVotes.get(comment.getThreadcommentid()).get(reply.getThreadcommentid()) ? "bi-hand-thumbs-down-fill" : "bi-hand-thumbs-down"%>"></i>
                                                 <span><%= reply.getDownvote()%></span>
                                             </button>

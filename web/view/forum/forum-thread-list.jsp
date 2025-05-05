@@ -138,11 +138,6 @@
                     %>
                 </div>
             </div>
-
-            <!-- Create Thread Button -->
-            <a href="../../CreateForumThreadServlet" class="create-thread-btn">
-                <i class="fas fa-plus"></i>
-            </a>
         </main>
     </section>
 </html>

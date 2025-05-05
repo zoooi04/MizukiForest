@@ -78,7 +78,28 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
-});     
+
+    // Attach event listeners to upvote and downvote buttons
+    const threadUpvoteButton = document.querySelector('.thread-actions .action-btn.upvote');
+    const threadDownvoteButton = document.querySelector('.thread-actions .action-btn.downvote');
+
+    if (threadUpvoteButton && threadDownvoteButton) {
+        threadUpvoteButton.addEventListener('click', function () {
+            handleVote(this, true);
+        });
+        threadDownvoteButton.addEventListener('click', function () {
+            handleVote(this, true);
+        });
+    }
+
+    const commentVoteButtons = document.querySelectorAll('.comment-item .action-btn');
+    commentVoteButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const isUpvote = this.classList.contains('upvote');
+            handleVote(this, false);
+        });
+    });
+});
 
 // Retrieve categories from meta tag and populate the dropdown
 function openEditPopup(button) {
@@ -191,8 +212,15 @@ function openDeletePopup(button) {
 // Modify the report popup to use a form
 function openReportPopup(button) {
     const isThreadReport = button.closest('.thread-actions') !== null;
+    const threadId = document.querySelector('meta[name="selected-threadid"]').content;
+    if (!threadId) {
+        console.error("Thread ID is missing in the page metadata.");
+        return;
+    }
+    const commentId = !isThreadReport ? button.closest('.comment-item').dataset.commentId : null;
+
     const popupHTML = `
-        <form class="popup-container" action="/reportServlet" method="POST">
+        <form class="popup-container" action="../../AddForumReportContentServlet" method="POST">
             <div class="popup-content">
                 <div class="popup-header">
                     <h2>Report ${isThreadReport ? 'Thread' : 'Comment'}</h2>
@@ -201,13 +229,16 @@ function openReportPopup(button) {
                 <div class="popup-body">
                     <div class="form-group">
                         <label for="report-details">Additional Details</label>
-                        <textarea id="report-details" name="details" placeholder="Please provide more details..." required></textarea>
+                        <textarea id="report-details" name="reportReason" placeholder="Please provide more details..." required></textarea>
                     </div>
                 </div>
                 <div class="popup-footer">
                     <button type="button" class="btn-cancel">Cancel</button>
                     <button type="submit" class="btn-confirm">Submit Report</button>
                 </div>
+                <input type="hidden" name="userId" value="${document.querySelector('meta[name=\"current-userid\"]').content}">
+                <input type="hidden" name="threadId" value="${threadId}">
+                ${commentId ? `<input type="hidden" name="threadCommentId" value="${commentId}">` : ''}
             </div>
         </form>
     `;
@@ -389,4 +420,64 @@ function submitReply(commentContent, replyText) {
                 console.error('Error submitting reply:', error);
                 alert('Failed to post reply. Please try again later.');
             });
+}
+
+// Add event listeners for upvote and downvote buttons
+function handleVote(button, isThreadVote) {
+    const parentContainer = button.closest(isThreadVote ? '.thread-actions' : '.comment-item');
+    const voteType = button.dataset.voteType === "true";
+    const id = isThreadVote ? document.querySelector('meta[name="selected-threadid"]').content : parentContainer.dataset.commentId;
+
+    console.log("Vote ID:", id);
+
+    fetch(`${window.location.origin}${window.location.pathname.split('/').slice(0, -1).join('/')}../../../UpdateForumVoteTypeServlet`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            id: id,
+            isThreadVote: isThreadVote,
+            voteType: voteType
+        }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to process vote');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Update the UI with the new vote counts
+        const upvoteButton = parentContainer.querySelector('.action-btn.upvote');
+        const downvoteButton = parentContainer.querySelector('.action-btn.downvote');
+
+        upvoteButton.querySelector('span').textContent = data.upvotes;
+        downvoteButton.querySelector('span').textContent = data.downvotes;
+
+        // Update button states
+        if (data.userVoteType === true) {
+            upvoteButton.classList.add('active');
+            downvoteButton.classList.remove('active');
+        } else if (data.userVoteType === false) {
+            upvoteButton.classList.remove('active');
+            downvoteButton.classList.add('active');
+        } else {
+            upvoteButton.classList.remove('active');
+            downvoteButton.classList.remove('active');
+        }
+
+        // Update session attributes dynamically if needed
+        if (isThreadVote) {
+            sessionStorage.setItem('threadVoteType', data.userVoteType);
+        } else {
+            const commentVotes = JSON.parse(sessionStorage.getItem('commentVotes')) || {};
+            commentVotes[id] = data.userVoteType;
+            sessionStorage.setItem('commentVotes', JSON.stringify(commentVotes));
+        }
+    })
+    .catch(error => {
+        console.error('Error processing vote:', error);
+        alert('Failed to process vote. Please try again later.');
+    });
 }

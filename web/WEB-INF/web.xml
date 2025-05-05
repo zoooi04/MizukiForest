@@ -44,6 +44,14 @@
         <servlet-name>DeleteForumThreadCommentServlet</servlet-name>
         <servlet-class>control.forum.DeleteForumThreadCommentServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateForumVoteTypeServlet</servlet-name>
+        <servlet-class>control.forum.UpdateForumVoteTypeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddForumReportContentServlet</servlet-name>
+        <servlet-class>control.forum.AddForumReportContentServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewDiaryEntryServlet</servlet-name>
         <url-pattern>/ViewDiaryEntryServlet</url-pattern>
@@ -87,6 +95,14 @@
     <servlet-mapping>
         <servlet-name>DeleteForumThreadCommentServlet</servlet-name>
         <url-pattern>/DeleteForumThreadCommentServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateForumVoteTypeServlet</servlet-name>
+        <url-pattern>/UpdateForumVoteTypeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddForumReportContentServlet</servlet-name>
+        <url-pattern>/AddForumReportContentServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
