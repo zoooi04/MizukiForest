@@ -40,6 +40,10 @@
         <servlet-name>GetThreadCategoriesServlet</servlet-name>
         <servlet-class>control.forum.GetThreadCategoriesServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteForumThreadCommentServlet</servlet-name>
+        <servlet-class>control.forum.DeleteForumThreadCommentServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewDiaryEntryServlet</servlet-name>
         <url-pattern>/ViewDiaryEntryServlet</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>GetThreadCategoriesServlet</servlet-name>
         <url-pattern>/GetThreadCategoriesServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteForumThreadCommentServlet</servlet-name>
+        <url-pattern>/DeleteForumThreadCommentServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -159,8 +159,11 @@ function openEditPopup(button) {
 // Modify the delete popup to use a form
 function openDeletePopup(button) {
     const isThreadDelete = button.closest('.thread-actions') !== null;
+    const threadId = isThreadDelete ? document.querySelector('meta[name="selected-threadid"]').content : null;
+    const commentId = !isThreadDelete ? button.closest('.comment-item').dataset.commentId : null;
+
     const popupHTML = `
-        <form class="popup-container" action="/deleteServlet" method="POST">
+        <form class="popup-container" action="../../DeleteForumThreadCommentServlet" method="POST">
             <div class="popup-content">
                 <div class="popup-header">
                     <h2>${isThreadDelete ? 'Delete Thread' : 'Delete Comment'}</h2>
@@ -173,6 +176,8 @@ function openDeletePopup(button) {
                     <button type="button" class="btn-cancel">Cancel</button>
                     <button type="submit" class="btn-confirm btn-danger">Yes, Delete</button>
                 </div>
+                ${isThreadDelete ? `<input type="hidden" name="threadId" value="${threadId}">` : ''}
+                ${!isThreadDelete ? `<input type="hidden" name="commentId" value="${commentId}">` : ''}
             </div>
         </form>
     `;
