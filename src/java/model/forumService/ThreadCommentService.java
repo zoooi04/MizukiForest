@@ -37,13 +37,13 @@ public class ThreadCommentService {
 
     public List<Threadcomment> findCommentsByThreadId(String threadId) {
         TypedQuery<Threadcomment> query = mgr.createQuery(
-            "SELECT c FROM Threadcomment c WHERE c.threadid.threadid = :threadId AND c.commentidreplyingto IS NULL AND c.isdeleted = false ORDER BY c.postdatetime ASC", 
+            "SELECT c FROM Threadcomment c WHERE c.threadid.threadid = :threadId AND c.commentidreplyingto IS NULL AND c.isdeleted = false ORDER BY c.upvote DESC", 
             Threadcomment.class
         );
         query.setParameter("threadId", threadId);
         return query.getResultList();
     }
-
+    
     public List<Threadcomment> findReplies(String commentId) {
         TypedQuery<Threadcomment> query = mgr.createQuery(
             "SELECT c FROM Threadcomment c WHERE c.commentidreplyingto.threadcommentid = :commentId AND c.isdeleted = false ORDER BY c.postdatetime ASC", 

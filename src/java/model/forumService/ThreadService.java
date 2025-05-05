@@ -141,6 +141,7 @@ public class ThreadService {
             existingThread.setThreaddescription(updatedThread.getThreaddescription());
             existingThread.setThreadcategoryid(updatedThread.getThreadcategoryid());
             mgr.merge(existingThread); // Ensure changes are merged
+            mgr.flush(); // Force the changes to be written to the database
             return true;
         }
         return false;
