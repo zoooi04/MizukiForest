@@ -87,6 +87,7 @@
                             </button>
                         </div>
 
+                        <% if (((model.Users) session.getAttribute("currentUser")).getUserid().equals(((model.Thread) session.getAttribute("selectedThread")).getUserid().getUserid())) { %>
                         <div class="action-group">
                             <button class="action-btn" style="display: block">
                                 <i class="bi bi-pencil-square"></i>
@@ -96,6 +97,10 @@
                                 <i class="bi bi-trash"></i>
                                 <span>Delete</span>
                             </button>
+                        </div>
+                        <% } %>
+
+                        <div class="action-group">
                             <button class="action-btn">
                                 <i class="bi bi-exclamation-circle"></i>
                                 <span>Report</span>
@@ -151,6 +156,7 @@
                                     <i class="bi bi-reply"></i>
                                     <span>Reply</span>
                                 </div>
+                                <% if (((model.Users) session.getAttribute("currentUser")).getUserid().equals(comment.getUserid().getUserid())) { %>
                                 <div class="comment-action edit">
                                     <i class="bi bi-pencil-square"></i>
                                     <span>Edit</span>
@@ -159,6 +165,7 @@
                                     <i class="bi bi-trash"></i>
                                     <span>Delete</span>
                                 </div>
+                                <% } %>
                                 <div class="comment-action report">
                                     <i class="bi bi-exclamation-circle"></i>
                                     <span>Report</span>
@@ -201,6 +208,7 @@
                                                 <i class="bi <%= replyVotes != null && replyVotes.get(comment.getThreadcommentid()) != null && replyVotes.get(comment.getThreadcommentid()).get(reply.getThreadcommentid()) != null && !replyVotes.get(comment.getThreadcommentid()).get(reply.getThreadcommentid()) ? "bi-hand-thumbs-down-fill" : "bi-hand-thumbs-down"%>"></i>
                                                 <span><%= reply.getDownvote()%></span>
                                             </button>
+                                            <% if (((model.Users) session.getAttribute("currentUser")).getUserid().equals(reply.getUserid().getUserid())) { %>
                                             <div class="comment-action edit">
                                                 <i class="bi bi-pencil-square"></i>
                                                 <span>Edit</span>
@@ -209,6 +217,7 @@
                                                 <i class="bi bi-trash"></i>
                                                 <span>Delete</span>
                                             </div>
+                                            <% } %>
                                             <div class="comment-action report">
                                                 <i class="bi bi-exclamation-circle"></i>
                                                 <span>Report</span>

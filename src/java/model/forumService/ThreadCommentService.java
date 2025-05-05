@@ -81,4 +81,16 @@ public class ThreadCommentService {
             mgr.merge(comment);
         }
     }
+
+    public String findThreadIdByCommentId(String commentId) {
+        try {
+            Threadcomment comment = mgr.find(Threadcomment.class, commentId);
+            if (comment != null && comment.getThreadid() != null) {
+                return comment.getThreadid().getThreadid();
+            }
+        } catch (Exception e) {
+            System.out.println("Error finding thread ID by comment ID: " + e.getMessage());
+        }
+        return null;
+    }
 }

@@ -32,7 +32,7 @@ function toggleReplies(commentId) {
 }
 
 // DOM Content Loaded Event Listener
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // No need to add event listeners for toggle-replies
     // as they already have an onclick attribute in the HTML
     // that calls toggleReplies directly
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Reply Buttons
     const replyButtons = document.querySelectorAll('.comment-action.reply');
     replyButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             toggleReplyForm(this);
         });
     });
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Edit Buttons
     const editButtons = document.querySelectorAll('.action-btn:has(i.bi-pencil-square), .comment-action:has(i.bi-pencil-square)');
     editButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             openEditPopup(this);
         });
     });
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Delete Buttons
     const deleteButtons = document.querySelectorAll('.action-btn:has(i.bi-trash), .comment-action:has(i.bi-trash)');
     deleteButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             openDeletePopup(this);
         });
     });
@@ -64,13 +64,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Report Buttons
     const reportButtons = document.querySelectorAll('.action-btn:has(i.bi-exclamation-circle), .comment-action:has(i.bi-exclamation-circle)');
     reportButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             openReportPopup(this);
         });
     });
 
     // Close popup when clicking outside
-    document.addEventListener('click', function(event) {
+    document.addEventListener('click', function (event) {
         const popups = document.querySelectorAll('.popup-container');
         popups.forEach(popup => {
             if (event.target === popup) {
@@ -80,10 +80,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Modify the edit popup to use a form
+// Ensure the commentId is included in the edit form
 function openEditPopup(button) {
     const isThreadEdit = button.closest('.thread-actions') !== null;
-    let title = '', description = '', category = 'General', imageSrc = '';
+    let title = '', description = '', category = 'General', imageSrc = '', commentId = '';
 
     if (isThreadEdit) {
         const threadContainer = button.closest('.thread-container');
@@ -92,19 +92,26 @@ function openEditPopup(button) {
         const categoryText = threadContainer.querySelector('.thread-meta span:nth-child(3)').textContent;
         category = categoryText.replace('Category: ', '');
         const threadImage = threadContainer.querySelector('.thread-image');
-        if (threadImage) imageSrc = threadImage.src;
+        if (threadImage)
+            imageSrc = threadImage.src;
     } else {
-        description = button.closest('.comment-content').querySelector('.comment-text').textContent;
+        const commentContainer = button.closest('.comment-content');
+        description = commentContainer.querySelector('.comment-text').textContent;
+        commentId = commentContainer.closest('.comment-item').dataset.commentId;
     }
 
     const popupHTML = `
-        <form class="popup-container" action="/editServlet" method="POST">
+        <form class="popup-container" action="../../EditForumThreadCommentServlet" method="POST">
             <div class="popup-content">
                 <div class="popup-header">
                     <h2>${isThreadEdit ? 'Edit Thread' : 'Edit Comment'}</h2>
                     <button type="button" class="close-popup">&times;</button>
                 </div>
                 <div class="popup-body">
+                    <div class="form-group">
+                        <label for="edit-description">${isThreadEdit ? 'Description' : 'Comment'}</label>
+                        <textarea id="edit-description" name="description" required>${description}</textarea>
+                    </div>
                     ${isThreadEdit ? `
                         <div class="form-group">
                             <label for="edit-title">Title</label>
@@ -120,15 +127,8 @@ function openEditPopup(button) {
                             </select>
                         </div>
                     ` : ''}
-                    <div class="form-group">
-                        <label for="edit-description">${isThreadEdit ? 'Description' : 'Comment'}</label>
-                        <textarea id="edit-description" name="description" required>${description}</textarea>
-                    </div>
-                    ${isThreadEdit ? `
-                        <div class="form-group">
-                            <label for="edit-image">Image</label>
-                            <input type="file" id="edit-image" name="image" accept="image/*">
-                        </div>
+                    ${!isThreadEdit ? `
+                        <input type="hidden" name="commentId" value="${commentId}">
                     ` : ''}
                 </div>
                 <div class="popup-footer">
@@ -251,7 +251,7 @@ function toggleReplyForm(replyButton) {
     const newForm = commentContent.querySelector('.reply-form');
 
     // Cancel button removes the form
-    newForm.querySelector('.btn-cancel-reply').addEventListener('click', function() {
+    newForm.querySelector('.btn-cancel-reply').addEventListener('click', function () {
         newForm.remove();
     });
 
@@ -290,9 +290,9 @@ function submitReply(commentContent, replyText) {
         const toggleText = commentContent.querySelector('.toggle-replies span');
         const currentCount = parseInt(toggleText.textContent.match(/\d+/)[0]);
         toggleText.textContent = toggleText.textContent.replace(
-            `(${currentCount})`, 
-            `(${currentCount + 1})`
-        );
+                `(${currentCount})`,
+                `(${currentCount + 1})`
+                );
     }
 
     // Send the reply to the server
@@ -306,15 +306,15 @@ function submitReply(commentContent, replyText) {
             parentId: commentContent.dataset.commentId, // Assuming each comment has a data-comment-id attribute
         }),
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to submit reply');
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Add the new reply to the UI
-        const newReplyHTML = `
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to submit reply');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Add the new reply to the UI
+                const newReplyHTML = `
             <div class="comment-item indented-comment">
                 <img src="${document.querySelector('.comment-avatar').src}" alt="User Avatar" class="comment-avatar">
                 <div class="comment-content">
@@ -346,31 +346,31 @@ function submitReply(commentContent, replyText) {
             </div>
         `;
 
-        repliesContainer.insertAdjacentHTML('beforeend', newReplyHTML);
+                repliesContainer.insertAdjacentHTML('beforeend', newReplyHTML);
 
-        // Add event listeners to the new comment's buttons
-        const newComment = repliesContainer.lastElementChild;
+                // Add event listeners to the new comment's buttons
+                const newComment = repliesContainer.lastElementChild;
 
-        // Edit button
-        newComment.querySelector('.comment-action:has(i.bi-pencil-square)').addEventListener('click', function() {
-            openEditPopup(this);
-        });
+                // Edit button
+                newComment.querySelector('.comment-action:has(i.bi-pencil-square)').addEventListener('click', function () {
+                    openEditPopup(this);
+                });
 
-        // Delete button
-        newComment.querySelector('.comment-action:has(i.bi-trash)').addEventListener('click', function() {
-            openDeletePopup(this);
-        });
+                // Delete button
+                newComment.querySelector('.comment-action:has(i.bi-trash)').addEventListener('click', function () {
+                    openDeletePopup(this);
+                });
 
-        // Report button
-        newComment.querySelector('.comment-action:has(i.bi-exclamation-circle)').addEventListener('click', function() {
-            openReportPopup(this);
-        });
+                // Report button
+                newComment.querySelector('.comment-action:has(i.bi-exclamation-circle)').addEventListener('click', function () {
+                    openReportPopup(this);
+                });
 
-        // Show success message
-        alert('Reply posted successfully!');
-    })
-    .catch(error => {
-        console.error('Error submitting reply:', error);
-        alert('Failed to post reply. Please try again later.');
-    });
+                // Show success message
+                alert('Reply posted successfully!');
+            })
+            .catch(error => {
+                console.error('Error submitting reply:', error);
+                alert('Failed to post reply. Please try again later.');
+            });
 }
