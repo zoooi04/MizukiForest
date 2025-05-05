@@ -41,6 +41,7 @@ public class ViewForumDetailServlet extends HttpServlet {
         Users currentUser = (Users) session.getAttribute("currentUser");
 
         String ThreadIdParam = request.getParameter("thread_id");
+        session.setAttribute("selectedThreadID", ThreadIdParam);
 
         if (ThreadIdParam != null && !ThreadIdParam.isEmpty()) {
             try {

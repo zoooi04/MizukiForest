@@ -4,6 +4,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const previewContainer = document.getElementById('imagePreviewContainer');
     const form = document.getElementById('newThreadForm');
     
+    // Display server-side error messages
+    const urlParams = new URLSearchParams(window.location.search);
+    const errorMessage = urlParams.get('error');
+    if (errorMessage) {
+        alert(errorMessage); // Display error as an alert
+    }
+    
     // Handle drag and drop events
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         uploadArea.addEventListener(eventName, preventDefaults, false);
@@ -79,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 const removeBtn = document.createElement('div');
                 removeBtn.className = 'remove-image';
-                removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                removeBtn.innerHTML = '<i class="bi bi-x"></i>'; // Updated remove button icon
                 
                 removeBtn.addEventListener('click', function(e) {
                     e.stopPropagation();

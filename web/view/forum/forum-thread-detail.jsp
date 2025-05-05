@@ -4,6 +4,11 @@
 <html lang="en" data-theme="mizuki_dark">
 
     <head>
+        <!-- Existing meta tags -->
+        <meta name="current-username" content="<%= ((model.Users) session.getAttribute("currentUser")).getUsername()%>">
+        <meta name="current-userid" content="<%= ((model.Users) session.getAttribute("currentUser")).getUserid()%>">
+        <meta name="selected-threadid" content="<%= session.getAttribute("selectedThreadID")%>">
+        <meta name="comment-id-reply-to" content="<%= request.getParameter("commentIdReplyTo") != null ? request.getParameter("commentIdReplyTo") : ""%>">
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum/forum_thread_list.css">
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum/forum_thread_detail.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -73,11 +78,11 @@
                     <div class="thread-actions">
                         <div class="action-group">
                             <button class="action-btn">
-                                <i class="<%= (session.getAttribute("threadVoteType") != null && (Boolean) session.getAttribute("threadVoteType")) ? "bi-hand-thumbs-up-fill" : "bi-hand-thumbs-up" %>"></i>
+                                <i class="<%= (session.getAttribute("threadVoteType") != null && (Boolean) session.getAttribute("threadVoteType")) ? "bi-hand-thumbs-up-fill" : "bi-hand-thumbs-up"%>"></i>
                                 <span><%= ((model.Thread) session.getAttribute("selectedThread")).getUpvote()%></span>
                             </button>
                             <button class="action-btn">
-                                <i class="bi <%= (session.getAttribute("threadVoteType") != null && !(Boolean) session.getAttribute("threadVoteType")) ? "bi-hand-thumbs-down-fill" : "bi-hand-thumbs-down" %>"></i>
+                                <i class="bi <%= (session.getAttribute("threadVoteType") != null && !(Boolean) session.getAttribute("threadVoteType")) ? "bi-hand-thumbs-down-fill" : "bi-hand-thumbs-down"%>"></i>
                                 <span><%= ((model.Thread) session.getAttribute("selectedThread")).getDownvote()%></span>
                             </button>
                         </div>
@@ -102,14 +107,19 @@
 
                 <!-- Comment Form -->
                 <div class="comment-form">
-                    <div class="flex items-center mb-3">
-                        <img src="<%= request.getContextPath()%>/media/images/mizuki.png" alt="User Avatar" class="comment-avatar mr-2">
-                        <span>Comment as <strong><%= (String) ((model.Users) session.getAttribute("currentUser")).getUsername()%></strong></span>
-                    </div>
-                    <textarea placeholder="What are your thoughts?"></textarea>
-                    <div class="flex justify-end">
-                        <button class="btn-comment">Comment</button>
-                    </div>
+                    <form action="<%= request.getContextPath()%>/AddForumThreadCommentServlet" method="post">
+                        <div class="flex items-center mb-3">
+                            <img src="<%= request.getContextPath()%>/media/images/mizuki.png" alt="User Avatar" class="comment-avatar mr-2">
+                            <span>Comment as <strong><%= (String) ((model.Users) session.getAttribute("currentUser")).getUsername()%></strong></span>
+                        </div>
+                        <textarea name="commentDescription" placeholder="What are your thoughts?" required></textarea>
+                        <input type="hidden" name="userId" value="<%= ((model.Users) session.getAttribute("currentUser")).getUserid()%>">
+                        <input type="hidden" name="threadId" value="<%= session.getAttribute("selectedThreadID")%>">
+                        <input type="hidden" name="commentIdReplyTo" value="">
+                        <div class="flex justify-end">
+                            <button type="submit" class="btn-comment">Comment</button>
+                        </div>
+                    </form>
                 </div>
 
                 <!-- Comment Section -->
@@ -119,13 +129,13 @@
                     <% Map<String, Boolean> commentVotes = (Map<String, Boolean>) session.getAttribute("commentVotes"); %>
                     <% if (comments != null && !comments.isEmpty()) { %>
                     <% for (model.Threadcomment comment : comments) {%>
-                    <div class="comment-item">
+                    <div class="comment-item" data-comment-id="<%= comment.getThreadcommentid()%>">
                         <img src="<%= request.getContextPath()%>/media/images/mizuki.png" alt="User Avatar" class="comment-avatar">
                         <div class="comment-content">
                             <div class="comment-author">
                                 <%= ((String) ((model.Users) session.getAttribute("currentUser")).getUserid()).equals(comment.getUserid().getUserid())
-                                    ? comment.getUserid().getUsername()
-                                    : "Anonymous User - " + comment.getUserid().getUserid().replaceAll("^[A-Za-z]+", "") %>
+                                        ? comment.getUserid().getUsername()
+                                        : "Anonymous User - " + comment.getUserid().getUserid().replaceAll("^[A-Za-z]+", "")%>
                             </div>
                             <div class="comment-text"><%= comment.getContent()%></div>
                             <div class="comment-actions">
@@ -137,7 +147,7 @@
                                     <i class="bi <%= commentVotes != null && commentVotes.get(comment.getThreadcommentid()) != null && !commentVotes.get(comment.getThreadcommentid()) ? "bi-hand-thumbs-down-fill" : "bi-hand-thumbs-down"%>"></i>
                                     <span><%= comment.getDownvote()%></span>
                                 </button>
-                                <div class="comment-action reply">
+                                <div class="comment-action reply" data-comment-id="<%= comment.getThreadcommentid()%>">
                                     <i class="bi bi-reply"></i>
                                     <span>Reply</span>
                                 </div>
@@ -173,13 +183,13 @@
                                 <% Map<String, Map<String, Boolean>> replyVotes = (Map<String, Map<String, Boolean>>) session.getAttribute("replyVotes"); %>
                                 <% if (replies != null && !replies.isEmpty()) { %>
                                 <% for (model.Threadcomment reply : replies) {%>
-                                <div class="comment-item indented-comment">
+                                <div class="comment-item indented-comment" >
                                     <img src="<%= request.getContextPath()%>/media/images/mizuki.png" alt="User Avatar" class="comment-avatar">
                                     <div class="comment-content">
                                         <div class="comment-author">
                                             <%= ((String) ((model.Users) session.getAttribute("currentUser")).getUserid()).equals(reply.getUserid().getUserid())
-                                                ? reply.getUserid().getUsername()
-                                                : "Anonymous User - " + reply.getUserid().getUserid().replaceAll("^[A-Za-z]+", "") %>
+                                                    ? reply.getUserid().getUsername()
+                                                    : "Anonymous User - " + reply.getUserid().getUserid().replaceAll("^[A-Za-z]+", "")%>
                                         </div>
                                         <div class="comment-text"><%= reply.getContent()%></div>
                                         <div class="comment-actions">
@@ -191,6 +201,18 @@
                                                 <i class="bi <%= replyVotes != null && replyVotes.get(comment.getThreadcommentid()) != null && replyVotes.get(comment.getThreadcommentid()).get(reply.getThreadcommentid()) != null && !replyVotes.get(comment.getThreadcommentid()).get(reply.getThreadcommentid()) ? "bi-hand-thumbs-down-fill" : "bi-hand-thumbs-down"%>"></i>
                                                 <span><%= reply.getDownvote()%></span>
                                             </button>
+                                            <div class="comment-action edit">
+                                                <i class="bi bi-pencil-square"></i>
+                                                <span>Edit</span>
+                                            </div>
+                                            <div class="comment-action delete">
+                                                <i class="bi bi-trash"></i>
+                                                <span>Delete</span>
+                                            </div>
+                                            <div class="comment-action report">
+                                                <i class="bi bi-exclamation-circle"></i>
+                                                <span>Report</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

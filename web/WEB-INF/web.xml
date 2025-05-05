@@ -24,6 +24,14 @@
         <servlet-name>ViewForumDetailServlet</servlet-name>
         <servlet-class>control.forum.ViewForumDetailServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddForumThreadServlet</servlet-name>
+        <servlet-class>control.forum.AddForumThreadServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddForumThreadCommentServlet</servlet-name>
+        <servlet-class>control.forum.AddForumThreadCommentServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewDiaryEntryServlet</servlet-name>
         <url-pattern>/ViewDiaryEntryServlet</url-pattern>
@@ -47,6 +55,14 @@
     <servlet-mapping>
         <servlet-name>ViewForumDetailServlet</servlet-name>
         <url-pattern>/ViewForumDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddForumThreadServlet</servlet-name>
+        <url-pattern>/AddForumThreadServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddForumThreadCommentServlet</servlet-name>
+        <url-pattern>/AddForumThreadCommentServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

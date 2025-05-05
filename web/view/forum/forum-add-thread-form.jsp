@@ -1,3 +1,5 @@
+<%@ page import="java.util.List" %>
+<%@ page import="model.Threadcategory" %>
 <%--<%@ page contentType="text/html;charset=UTF-8" language="java" %>--%>
 <!DOCTYPE html>
 <html lang="en" data-theme="mizuki_dark">
@@ -23,19 +25,47 @@
                     <h1 class="text-3xl font-bold text-center my-6">Create New Thread</h1>
                 </div>
 
+                <%-- Display error message if present --%>
+                <% if (request.getParameter("error") != null) {%>
+                <div class="error-message">
+                    <p><%= request.getParameter("error")%></p>
+                </div>
+                <% }%>
+
                 <div class="new-thread-container">
-                    <form id="newThreadForm" action="<%= request.getContextPath()%>/forum/create" method="post" enctype="multipart/form-data">
+                    <form id="newThreadForm" action="<%= request.getContextPath()%>/AddForumThreadServlet" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="threadTitle">Title</label>
-                            <input type="text" id="threadTitle" name="threadTitle" required placeholder="Enter thread title">
+                            <input type="text" id="threadTitle" name="threadTitle" required placeholder="Enter thread title" value="<%= request.getParameter("title") != null ? request.getParameter("title") : ""%>">
                         </div>
 
                         <div class="form-group">
                             <label for="threadDescription">Description</label>
-                            <textarea id="threadDescription" name="threadDescription" required placeholder="Enter thread description"></textarea>
+                            <textarea id="threadDescription" name="threadDescription" required placeholder="Enter thread description"><%= request.getParameter("description") != null ? request.getParameter("description") : ""%></textarea>
                         </div>
 
                         <div class="form-group">
+                            <label for="threadCategory">Category</label>
+                            <select id="threadCategory" name="categoryId" required>
+                                <option value="" disabled selected>Select a category</option>
+                                <% 
+                                    List<Threadcategory> threadCategoryList = (List<Threadcategory>) session.getAttribute("forumThreadCategoryList");
+                                    String selectedCategory = request.getParameter("categoryId");
+                                    if (threadCategoryList != null) {
+                                        for (Threadcategory threadCategory : threadCategoryList) {
+                                            String threadCategoryId = threadCategory.getThreadcategoryid();
+                                            String threadCategoryName = threadCategory.getThreadcategoryname();
+                                            boolean isSelected = threadCategoryId.equals(selectedCategory);
+                                %>
+                                <option value="<%= threadCategoryId%>" <%= isSelected ? "selected" : ""%>>
+                                    <%= threadCategoryName%>
+                                </option>
+                                <%     }
+                                    }%>
+                            </select>
+                        </div>
+
+<!--                        <div class="form-group">
                             <label>Images</label>
                             <div class="image-upload-container">
                                 <div class="upload-area" id="uploadArea">
@@ -46,10 +76,10 @@
                                 </div>
 
                                 <div class="image-preview-container" id="imagePreviewContainer">
-                                    <!-- Preview images will be dynamically added here -->
+                                     Preview images will be dynamically added here 
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
 
                         <div class="form-actions">
                             <button type="button" class="btn-cancel" onclick="window.location.href = '<%= request.getContextPath()%>/view/forum/forum-thread-list.jsp?threadType=my'">Cancel</button>
