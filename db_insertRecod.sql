@@ -1,16 +1,17 @@
 -- USERS Table, andrew update: only first 3 record is real life email value...
 -- USERS Table, andrew update: only first 3 record is real life email value...
-INSERT INTO USERS (USERID, USERNAME, USERPW, USEREMAIL, USERBIRTHDAY, COINS, EXP, USERLEVEL, LOGINSTREAK, DIARYVISIBILITY, FORESTVISIBILITY, ISDELETED, USERIMAGE) VALUES
-('U2500001', 'Andrew Pheng', 'Andrew@123', 'andrewwwpqj@gmail.com', '1980-12-24', 936, 688, 3, 1, TRUE, TRUE, FALSE, NULL),
-('U2500002', 'Huai Ern', 'Huaiern@123', '007kidlolipop@gmail.com', '2002-09-28', 880, 772, 4, 1, TRUE, TRUE, FALSE, NULL),
-('U2500003', 'Jian Hui', 'jianhui@123', 'andrewpqj-pm22@student.tarc.edu.my', '1971-05-17', 507, 130, 1, 1, TRUE, TRUE, FALSE, NULL),
-('U2500004', 'Choon Chong', 'cccc@123', 'mccallamy@hotmail.com', '1987-05-28', 735, 336, 2, 1, TRUE, TRUE, FALSE, NULL),
-('U2500005', 'Jia Quan', '123qwe', 'leejiaquan721@gmail.com', '1980-05-12', 9999, 1111, 5, 1, TRUE, TRUE, FALSE, NULL),
-('U2500006', 'robert32', 'vqj)C3Fx', 'quinncynthia@rivera.com', '1966-04-02', 998, 456, 3, 1, FALSE, TRUE, TRUE, NULL),
-('U2500007', 'nthomas', '@0iAhIqC', 'nancycarroll@yahoo.com', '1989-11-10', 707, 276, 2, 1, FALSE, TRUE, FALSE, NULL),
-('U2500008', 'rhodeskelsey', ')5%kRvMQ', 'leahpollard@hotmail.com', '1991-04-20', 673, 538, 3, 1, TRUE, TRUE, FALSE, NULL),
-('U2500009', 'ann55', 'rc^f9GzL', 'josejohnson@yahoo.com', '1998-03-22', 651, 613, 3, 1, TRUE, TRUE, FALSE, NULL),
-('U2500010', 'sandra66', 'o@e3JizS', 'millerjason@hotmail.com', '2001-03-06', 722, 293, 3, 1, TRUE, FALSE, TRUE, NULL);
+INSERT INTO USERS (USERID, USERNAME, USERPW, USEREMAIL, USERBIRTHDAY, COINS, EXP, USERLEVEL, LOGINSTREAK, DIARYVISIBILITY, FORESTVISIBILITY,PITY, LASTLOGINDATE, ISDELETED, USERIMAGE) VALUES
+('U2500001', 'Andrew Pheng', 'Andrew@123', 'andrewwwpqj@gmail.com', '1980-12-24', 936, 688, 3, 1, TRUE, TRUE,7,'2025-05-05', FALSE, 'mizuki.png'),
+('U2500002', 'Huai Ern', 'Huaiern@123', '007kidlolipop@gmail.com', '2002-09-28', 880, 772, 4, 1, TRUE, TRUE,7,'2025-05-05', FALSE, 'Lirili_rili_ralila.png'),
+('U2500003', 'Jian Hui', 'jianhui@123', 'andrewpqj-pm22@student.tarc.edu.my', '1971-05-17', 507, 130, 1, 1, TRUE, TRUE, 7,'2025-05-05',FALSE, NULL),
+('U2500004', 'Choon Chong', 'cccc@123', 'mccallamy@hotmail.com', '1987-05-28', 735, 336, 2, 1, TRUE, TRUE,7,'2025-05-05', FALSE, NULL),
+('U2500005', 'Jia Quan', '123qwe', 'leejiaquan721@gmail.com', '1980-05-12', 9999, 1111, 5, 1, TRUE, TRUE, 7,'2025-05-05',FALSE, 'sui.jpg'),
+('U2500006', 'robert32', 'vqj)C3Fx', 'quinncynthia@rivera.com', '1966-04-02', 998, 456, 3, 1, FALSE, TRUE, 7,'2025-05-05',TRUE, NULL),
+('U2500007', 'nthomas', '@0iAhIqC', 'nancycarroll@yahoo.com', '1989-11-10', 707, 276, 2, 1, FALSE, TRUE, 7,'2025-05-05',FALSE, NULL),
+('U2500008', 'rhodeskelsey', ')5%kRvMQ', 'leahpollard@hotmail.com', '1991-04-20', 673, 538, 3, 1, TRUE, TRUE, 7,'2025-05-05',FALSE, NULL),
+('U2500009', 'ann55', 'rc^f9GzL', 'josejohnson@yahoo.com', '1998-03-22', 651, 613, 3, 1, TRUE, TRUE, 7,'2025-05-05',FALSE, NULL),
+('U2500010', 'sandra66', 'o@e3JizS', 'millerjason@hotmail.com', '2001-03-06', 722, 293, 3, 1, TRUE, FALSE, 7,'2025-05-05',TRUE, NULL),
+('U2500011', 'Admin', '123qwe', 'admin@example.com', '2001-03-06', 722, 293, 3, 1, TRUE, FALSE, 7,'2025-05-05',TRUE, NULL);
 
 
 
@@ -20,7 +21,9 @@ INSERT INTO BADGE (BADGEID, BADGENAME, BADGEIMAGE) VALUES
 ('BA000002','Journal Badge','/media/images/badge/Journal Badge.png'),
 ('BA000003','Music Badge','/media/images/badge/Music Badge.png'),
 ('BA000004','Therapy Badge','/media/images/badge/Therapy Badge.png'),
-('BA000005','Forum Badge','/media/images/badge/Forum Badge.png');
+('BA000005','Forum Badge','/media/images/badge/Forum Badge.png'),
+('BA000006','HIDDEN','/media/images/badge/HIDDEN.png');
+
 
 
 
@@ -29,32 +32,43 @@ INSERT INTO ACHIEVEMENTCATEGORY (ACHIEVEMENTCATEGORYID, ACHIEVEMENTCATEGORYNAME,
 ('AC000001', 'Productivity', 'BA000001'),
 ('AC000002', 'Social Interaction', 'BA000002'),
 ('AC000003', 'Exploration', 'BA000003'),
-('AC000004', 'Challenge', 'BA000004');
+('AC000004', 'Challenge', 'BA000004'),
+('AC000005', 'Communicate', 'BA000005'),
+('AC000006', 'Overall', 'BA000006');
 
 
 -- ACHIEVEMENT Table
 INSERT INTO ACHIEVEMENT (ACHIEVEMENTID, ACHIEVEMENTCATEGORYID, ACHIEVEMENTNAME, ACHIEVEMENTDESCRIPTION, HIDDEN, ISDELETED) VALUES
-('A0000001', 'AC000001', 'Focus Novice', 'Complete 1 focus session', FALSE, FALSE),
-('A0000002', 'AC000001', 'Productivity Pro', 'Complete 10 focus sessions', FALSE, FALSE),
+('A0000001', 'AC000001', 'I have Already Met My Mona Li-Tree', 'Get the first legendary tree', FALSE, FALSE),
+('A0000002', 'AC000001', 'YouSeeBIGTREE', 'Plant the first legendary tree', FALSE, FALSE),
 ('A0000003', 'AC000001', 'Task Master', 'Complete 5 tasks in a day', TRUE, FALSE),
-('A0000004', 'AC000001', 'Early Bird', 'Start a focus session before 7 AM', TRUE, FALSE),
-('A0000005', 'AC000001', 'Night Owl', 'Start a focus session after 10 PM', TRUE, FALSE),
-('A0000006', 'AC000002', 'Social Butterfly', 'Send 10 messages in the forum', FALSE, FALSE),
-('A0000007', 'AC000002', 'Su-su-su-super Supportive Soul', 'Upvote 20 comments', FALSE, FALSE),
-('A0000008', 'AC000002', 'Community Leader', 'Create a popular thread with 50+ upvotes', TRUE, FALSE),
-('A0000009', 'AC000002', 'Empathy Expert', 'Respond to 10 support requests', FALSE, FALSE),
-('A0000010', 'AC000002', 'Forum Star', 'Post 5 threads in a week', FALSE, FALSE),
-('A0000011', 'AC000003', 'I have Already Met My Mona Li-Tree', 'Get the first legendary tree', FALSE, FALSE),
-('A0000012', 'AC000003', 'YouSeeBIGTREE', 'Plant the first legendary tree', FALSE, FALSE),
-('A0000013', 'AC000003', 'No Tree No Life', 'Fill the land with trees', FALSE, FALSE),
-('A0000014', 'AC000003', 'Tree Instrumentality Project', 'There are two islands full of trees', TRUE, FALSE),
-('A0000015', 'AC000003', 'To Be Continued....', 'Break too long....', TRUE, FALSE),
-('A0000016', 'AC000003', 'One Last Tree', 'Use shovel to remove the dead tree', FALSE, FALSE),
-('A0000017', 'AC000003', 'Animal Crossing!', 'Get two animals', FALSE, FALSE),
-('A0000018', 'AC000004', 'I mustn''t run away', 'Focus for 30 minutes', FALSE, FALSE),
-('A0000019', 'AC000004', 'Hollup, Let Him Cook!', 'Focus for 1 hour', FALSE, FALSE),
-('A0000020', 'AC000003', 'Hey, You Are Not Me!', 'Name yourself as the developer name', FALSE, FALSE);
-
+('A0000004', 'AC000001', 'One Last Tree', 'Use shovel to remove the dead tree', FALSE, FALSE),
+('A0000005', 'AC000001', 'Hollup, Let Him Cook!', 'Focus for 1 hour', FALSE, FALSE),
+('A0000006', 'AC000002', 'First Steps', 'Write your first 10 diary entries', FALSE, FALSE),
+('A0000007', 'AC000002', 'Positive Vibes', 'React to 20 diary entries with a supportive emoji or comment', FALSE, FALSE),
+('A0000008', 'AC000002', 'Diary Influencer', 'Create a diary entry that receives 50+ reactions', TRUE, FALSE),
+('A0000009', 'AC000002', 'Compassionate Companion', 'Leave helpful comments on 10 different users’ entries', FALSE, FALSE),
+('A0000010', 'AC000002', 'Daily Dedication', 'Write 5 diary entries in one week', FALSE, FALSE),
+('A0000011', 'AC000003', 'My First Soundscape', 'Use ambient music while writing for the first time', FALSE, FALSE),
+('A0000012', 'AC000003', 'Harmony Begins', 'Create your first music-backed diary entry', FALSE, FALSE),
+('A0000013', 'AC000003', 'Mood Maestro', 'Tag entries with music 30 times', FALSE, FALSE),
+('A0000014', 'AC000003', 'Echo Isles', 'Have two full weeks of music-enhanced entries', TRUE, FALSE),
+('A0000015', 'AC000003', 'Soundtrack of My Life', 'Listen to background music for a total of 10 hours while journaling', TRUE, FALSE),
+('A0000016', 'AC000004', 'First Step Forward', 'Attend your first therapy session', FALSE, FALSE),
+('A0000017', 'AC000004', 'Active Participant', 'Leave feedback or reflection after 20 sessions', FALSE, FALSE),
+('A0000018', 'AC000004', 'Therapy Champion', 'Reach a milestone with 50+ session check-ins', TRUE, FALSE),
+('A0000019', 'AC000004', 'Support Seeker', 'Ask 10 questions or seek advice during therapy', FALSE, FALSE),
+('A0000020', 'AC000004', 'Weekly Commitment', 'Join 5 therapy sessions in a single week', FALSE, FALSE),
+('A0000021', 'AC000005', 'Social Butterfly', 'Send 10 messages in the forum', FALSE, FALSE),
+('A0000022', 'AC000005', 'Su-su-su-super Supportive Soul', 'Upvote 20 comments', FALSE, FALSE),
+('A0000023', 'AC000005', 'Community Leader', 'Create a popular thread with 50+ upvotes', TRUE, FALSE),
+('A0000024', 'AC000005', 'Empathy Expert', 'Respond to 10 support requests', FALSE, FALSE),
+('A0000025', 'AC000005', 'Forum Star', 'Post 5 threads in a week', FALSE, FALSE),
+('A0000026', 'AC000006', 'The Whispering Grove', 'Discover the secret tree by planting in a rare spot', TRUE, FALSE),
+('A0000027', 'AC000006', 'Ink Between the Lines', 'Write a diary entry between 2:00 and 3:00 AM', TRUE, FALSE),
+('A0000028', 'AC000006', 'Silent Symphony', 'Listen to music without skipping for 1 hour straight', TRUE, FALSE),
+('A0000029', 'AC000006', 'Breakthrough Moment', 'Unlock a surprise message from your therapist', TRUE, FALSE),
+('A0000030', 'AC000006', 'Lurker No More', 'React to a post after 7 days of silence', TRUE, FALSE);
 
 INSERT INTO ITEM (ITEMID, ITEMNAME, ITEMTYPE, ITEMSTATUS, ITEMCOST, ISARCHIVED, ISDELETED, ITEMIMAGE) VALUES
 ('IT000001', 'Mystic Fox', 'Creature', TRUE, 5000, FALSE, FALSE, '/media/images/item/mythic_fox.png'),
@@ -233,7 +247,7 @@ INSERT INTO MUSIC (MUSICID, MUSICNAME, AUTHOR, FILEPATH, MHOUR, MMINUTE, MSECOND
 ('M0000027', 'Happy Times', 'Peder B. Helland', '/media/musics/Happy Times.mp3', 0, 11, 25),
 ('M0000028', 'Beautiful Day', 'Peder B. Helland', '/media/musics/Beautiful Day.mp3', 0, 9, 52),
 ('M0000029', 'The Campfire', 'Peder B. Helland', '/media/musics/The Campfire.mp3', 0, 7, 44),
-('M0000030', 'Starship III', 'SEBii & Jiangie', '/media/musics/SEBii & Jiangie_ Starship III (Official Animated Music Video).mp3', 0, 2, 46);
+('M0000030', 'Starship III', 'SEBii & Jiangie', 'Starship III.mp3', 0, 2, 46);
 
 
 
@@ -268,14 +282,14 @@ INSERT INTO THERAPIST (THERAPISTID, THERAPISTNAME, THERAPISTPW, THERAPISTEMAIL, 
 
 -- TASK Table
 INSERT INTO TASK (TASKID, TASKNAME, TASKDESCRIPTION, ISCUSTOMISABLE, ISARCHIVED, ISDELETED) VALUES
-('TK000001', 'Morning Meditation', 'Spend 10 minutes meditating to start the day with clarity.', TRUE, FALSE, FALSE),
+('TK000001', 'Morning Meditation', 'Spend 10 minutes meditating to start the day with clarity.', FALSE, FALSE, FALSE),
 ('TK000002', 'Water the Trees', 'Ensure all trees in your forest are well-watered.', FALSE, FALSE, FALSE),
 ('TK000003', 'Daily Walk', 'Take a 30-minute walk to refresh your mind and body.', TRUE, FALSE, FALSE),
 ('TK000004', 'Read a Chapter', 'Read one chapter of a book to expand your knowledge.', TRUE, FALSE, FALSE),
-('TK000005', 'Write a Journal Entry', 'Reflect on your day and write about your experiences.', TRUE, FALSE, FALSE),
-('TK000006', 'Complete a Focus Session', 'Spend 25 minutes working on a deep-focus task.', FALSE, FALSE, FALSE),
-('TK000007', 'Stretching Routine', 'Do a 10-minute full-body stretching routine.', TRUE, FALSE, FALSE),
-('TK000008', 'Check-In on Goals', 'Review your progress and adjust your daily goals.', FALSE, FALSE, FALSE),
+('TK000005', 'Write a Journal Entry', 'Reflect on your day and write about your experiences.', FALSE, FALSE, FALSE),
+('TK000006', 'Complete a Focus Session', 'Spend 25 minutes working on a deep-focus task.', TRUE, FALSE, FALSE),
+('TK000007', 'Stretching Routine', 'Do a 10-minute full-body stretching routine.', TRUE, TRUE, FALSE),
+('TK000008', 'Check-In on Goals', 'Review your progress and adjust your daily goals.', TRUE, FALSE, FALSE),
 ('TK000009', 'Practice Gratitude', 'Write down three things you are grateful for.', TRUE, FALSE, FALSE),
 ('TK000010', 'Night Reflection', 'Take a moment to reflect on what went well today.', TRUE, FALSE, FALSE);
 
@@ -479,41 +493,61 @@ INSERT INTO USERACHIEVEMENT (USERID, ACHIEVEMENTID, DATECOMPLETED, ISDELETED) VA
 ('U2500007', 'A0000002', '2025-03-07', FALSE),
 ('U2500008', 'A0000003', '2025-03-08', FALSE),
 ('U2500009', 'A0000004', '2025-03-09', FALSE),
-('U2500010', 'A0000005', '2025-03-10', FALSE);
-
+('U2500010', 'A0000005', '2025-03-10', FALSE),
+('U2500001', 'A0000028', '2025-05-05', FALSE);
 
 -- USERINVENTORYITEM Table
 INSERT INTO USERINVENTORYITEM (INVENTORYITEMID, USERID, TREEBOXID, ITEMID, TREEID, BIOMEID, QUANTITY, ISDELETED) VALUES
-('IVAA0001', 'U2500001', 'TB000001', NULL, NULL, NULL, 10, FALSE),
-('IVAA0002', 'U2500001', NULL, 'IT000001', NULL, NULL, 5, FALSE),
-('IVAA0003', 'U2500001', 'TB000002', NULL, NULL, NULL, 9, FALSE),
-('IVAA0004', 'U2500001', NULL, 'IT000002', NULL, NULL, 1, FALSE),
-('IVAA0005', 'U2500001', 'TB000003', NULL, NULL, NULL, 8, FALSE),
-('IVAA0006', 'U2500001', NULL, 'IT000003', NULL, NULL, 2, FALSE),
-('IVAA0007', 'U2500002', 'TB000004', NULL, NULL, NULL, 7, FALSE),
-('IVAA0008', 'U2500002', NULL, 'IT000004', NULL, NULL, 3, FALSE),
-('IVAA0009', 'U2500002', 'TB000004', NULL, NULL, NULL, 2, FALSE),
-('IVAA0010', 'U2500001', NULL, NULL, NULL, 'B0000001', 1, FALSE),
-('IVAA0011', 'U2500002', NULL, NULL, NULL, 'B0000001', 1, FALSE),
-('IVAA0012', 'U2500001', NULL, NULL, NULL, 'B0000002', 1, FALSE),
-('IVAA0013','U2500001',NULL,NULL,'T0000001',NULL,9,FALSE),
-('IVAA0014','U2500001',NULL,NULL,'T0000002',NULL,1,FALSE),
-('IVAA0015','U2500001',NULL,NULL,'T0000003',NULL,3,FALSE),
-('IVAA0016','U2500001',NULL,NULL,'T0000004',NULL,5,FALSE),
-('IVAA0017','U2500001',NULL,NULL,'T0000005',NULL,2,FALSE),
-('IVAA0018','U2500001',NULL,NULL,'T0000006',NULL,4,FALSE),
-('IVAA0019','U2500001',NULL,NULL,'T0000007',NULL,5,FALSE),
-('IVAA0020','U2500001',NULL,NULL,'T0000008',NULL,3,FALSE),
-('IVAA0021','U2500001',NULL,NULL,'T0000009',NULL,2,FALSE),
-('IVAA0022','U2500001',NULL,'IT000022',NULL,NULL,2,FALSE),
-('IVAA0023','U2500001',NULL,'IT000023',NULL,NULL,2,FALSE),
-('IVAA0024','U2500001',NULL,'IT000024',NULL,NULL,2,FALSE),
-('IVAA0025','U2500001',NULL,'IT000025',NULL,NULL,2,FALSE),
-('IVAA0026','U2500001',NULL,'IT000026',NULL,NULL,2,FALSE),
-('IVAA0027','U2500001',NULL,'IT000027',NULL,NULL,2,FALSE),
-('IVAA0028','U2500001','TB000004',NULL,NULL,NULL,5,FALSE);
-
-
+('IVAA0001', 'U2500001', 'B0000001', NULL, NULL, NULL, 1, FALSE),
+('IVAA0002', 'U2500001', NULL, 'T0000001', NULL, NULL, 1, FALSE),
+('IVAA0003', 'U2500001', NULL, 'T0000002', NULL, NULL, 1, FALSE),
+('IVAA0004', 'U2500001', NULL, 'T0000003', NULL, NULL, 1, FALSE),
+('IVAA0005', 'U2500001', NULL, 'T0000004', NULL, NULL, 1, FALSE),
+('IVAA0006', 'U2500002', 'B0000001', NULL, NULL, NULL, 1, FALSE),
+('IVAA0007', 'U2500002', NULL, 'T0000001', NULL, NULL, 1, FALSE),
+('IVAA0008', 'U2500002', NULL, 'T0000002', NULL, NULL, 1, FALSE),
+('IVAA0009', 'U2500002', NULL, 'T0000003', NULL, NULL, 1, FALSE),
+('IVAA0010', 'U2500002', NULL, 'T0000004', NULL, NULL, 1, FALSE),
+('IVAA0011', 'U2500003', 'B0000001', NULL, NULL, NULL, 1, FALSE),
+('IVAA0012', 'U2500003', NULL, 'T0000001', NULL, NULL, 1, FALSE),
+('IVAA0013', 'U2500003', NULL, 'T0000002', NULL, NULL, 1, FALSE),
+('IVAA0014', 'U2500003', NULL, 'T0000003', NULL, NULL, 1, FALSE),
+('IVAA0015', 'U2500003', NULL, 'T0000004', NULL, NULL, 1, FALSE),
+('IVAA0016', 'U2500004', 'B0000001', NULL, NULL, NULL, 1, FALSE),
+('IVAA0017', 'U2500004', NULL, 'T0000001', NULL, NULL, 1, FALSE),
+('IVAA0018', 'U2500004', NULL, 'T0000002', NULL, NULL, 1, FALSE),
+('IVAA0019', 'U2500004', NULL, 'T0000003', NULL, NULL, 1, FALSE),
+('IVAA0020', 'U2500004', NULL, 'T0000004', NULL, NULL, 1, FALSE),
+('IVAA0021', 'U2500005', 'B0000001', NULL, NULL, NULL, 1, FALSE),
+('IVAA0022', 'U2500005', NULL, 'T0000001', NULL, NULL, 1, FALSE),
+('IVAA0023', 'U2500005', NULL, 'T0000002', NULL, NULL, 1, FALSE),
+('IVAA0024', 'U2500005', NULL, 'T0000003', NULL, NULL, 1, FALSE),
+('IVAA0025', 'U2500005', NULL, 'T0000004', NULL, NULL, 1, FALSE),
+('IVAA0026', 'U2500006', 'B0000001', NULL, NULL, NULL, 1, FALSE),
+('IVAA0027', 'U2500006', NULL, 'T0000001', NULL, NULL, 1, FALSE),
+('IVAA0028', 'U2500006', NULL, 'T0000002', NULL, NULL, 1, FALSE),
+('IVAA0029', 'U2500006', NULL, 'T0000003', NULL, NULL, 1, FALSE),
+('IVAA0030', 'U2500006', NULL, 'T0000004', NULL, NULL, 1, FALSE),
+('IVAA0031', 'U2500007', 'B0000001', NULL, NULL, NULL, 1, FALSE),
+('IVAA0032', 'U2500007', NULL, 'T0000001', NULL, NULL, 1, FALSE),
+('IVAA0033', 'U2500007', NULL, 'T0000002', NULL, NULL, 1, FALSE),
+('IVAA0034', 'U2500007', NULL, 'T0000003', NULL, NULL, 1, FALSE),
+('IVAA0035', 'U2500007', NULL, 'T0000004', NULL, NULL, 1, FALSE),
+('IVAA0036', 'U2500008', 'B0000001', NULL, NULL, NULL, 1, FALSE),
+('IVAA0037', 'U2500008', NULL, 'T0000001', NULL, NULL, 1, FALSE),
+('IVAA0038', 'U2500008', NULL, 'T0000002', NULL, NULL, 1, FALSE),
+('IVAA0039', 'U2500008', NULL, 'T0000003', NULL, NULL, 1, FALSE),
+('IVAA0040', 'U2500008', NULL, 'T0000004', NULL, NULL, 1, FALSE),
+('IVAA0041', 'U2500009', 'B0000001', NULL, NULL, NULL, 1, FALSE),
+('IVAA0042', 'U2500009', NULL, 'T0000001', NULL, NULL, 1, FALSE),
+('IVAA0043', 'U2500009', NULL, 'T0000002', NULL, NULL, 1, FALSE),
+('IVAA0044', 'U2500009', NULL, 'T0000003', NULL, NULL, 1, FALSE),
+('IVAA0045', 'U2500009', NULL, 'T0000004', NULL, NULL, 1, FALSE),
+('IVAA0046', 'U2500010', 'B0000001', NULL, NULL, NULL, 1, FALSE),
+('IVAA0047', 'U2500010', NULL, 'T0000001', NULL, NULL, 1, FALSE),
+('IVAA0048', 'U2500010', NULL, 'T0000002', NULL, NULL, 1, FALSE),
+('IVAA0049', 'U2500010', NULL, 'T0000003', NULL, NULL, 1, FALSE),
+('IVAA0050', 'U2500010', NULL, 'T0000004', NULL, NULL, 1, FALSE);
 
 
 -- ACHIEVEMENTREWARD Table
@@ -527,16 +561,36 @@ INSERT INTO ACHIEVEMENTREWARD (ACHIEVEMENTREWARDID, ACHIEVEMENTID, TREEBOXID, IT
 ('AR000007', 'A0000004', 'TB000004', NULL, 2, FALSE),
 ('AR000008', 'A0000004', NULL, 'IT000004', 3, FALSE),
 ('AR000009', 'A0000005', 'TB000004', NULL, 1, FALSE),
-('AR000010', 'A0000005', NULL, 'IT000005', 6, FALSE);
+('AR000010', 'A0000005', NULL, 'IT000005', 6, FALSE),
+('AR000011', 'A0000006', 'TB000001', NULL, 1, FALSE),
+('AR000012', 'A0000006', NULL, 'IT000006', 2, FALSE),
+('AR000013', 'A0000007', 'TB000002', NULL, 2, FALSE),
+('AR000014', 'A0000007', NULL, 'IT000007', 3, FALSE),
+('AR000015', 'A0000008', NULL, 'IT000008', 4, FALSE),
+('AR000016', 'A0000009', NULL, 'IT000009', 1, FALSE),
+('AR000017', 'A0000010', 'TB000002', NULL, 1, FALSE),
+('AR000018', 'A0000010', NULL, 'IT000010', 2, FALSE),
+('AR000019', 'A0000011', NULL, 'IT000011', 1, FALSE),
+('AR000020', 'A0000012', NULL, 'IT000012', 1, FALSE),
+('AR000021', 'A0000013', 'TB000003', NULL, 2, FALSE),
+('AR000022', 'A0000013', NULL, 'IT000013', 2, FALSE),
+('AR000023', 'A0000014', NULL, 'IT000014', 1, FALSE),
+('AR000024', 'A0000015', NULL, 'IT000015', 1, FALSE),
+('AR000025', 'A0000016', 'TB000001', NULL, 1, FALSE),
+('AR000026', 'A0000016', NULL, 'IT000016', 1, FALSE),
+('AR000027', 'A0000017', 'TB000002', NULL, 2, FALSE),
+('AR000028', 'A0000017', NULL, 'IT000017', 3, FALSE),
+('AR000029', 'A0000018', NULL, 'IT000018', 1, FALSE),
+('AR000030', 'A0000019', NULL, 'IT000019', 2, FALSE);
 
 
 -- USERBADGE Table
 INSERT INTO USERBADGE (USERID, BADGEID, ISSELECTED, ISDELETED) VALUES
 ('U2500001', 'BA000001', TRUE, FALSE),
-('U2500002', 'BA000002', FALSE, FALSE),
-('U2500003', 'BA000003', FALSE, FALSE),
-('U2500004', 'BA000004', TRUE, FALSE),
-('U2500001', 'BA000001', FALSE, FALSE),
+('U2500001', 'BA000002', FALSE, FALSE),
+('U2500001', 'BA000003', FALSE, FALSE),
+('U2500001', 'BA000004', TRUE, FALSE),
+('U2500002', 'BA000001', FALSE, FALSE),
 ('U2500006', 'BA000003', FALSE, FALSE),
 ('U2500007', 'BA000001', TRUE, FALSE),
 ('U2500008', 'BA000003', FALSE, FALSE),
@@ -554,10 +608,10 @@ INSERT INTO USERPLAYLIST (PLAYLISTID, USERID, PLAYLISTNAME, DATECREATED, ISDELET
 
 
 -- USERFAVOURITE Table
-INSERT INTO USERFAVOURITE (USERID, MUSICID, ISDELETED) VALUES 
-('U2500001', 'M0000001', FALSE),
-('U2500001', 'M0000003', FALSE),
-('U2500001', 'M0000005', FALSE);
+--INSERT INTO USERFAVOURITE (USERID, MUSICID, ISDELETED) VALUES 
+--('U2500001', 'M0000001', FALSE),
+--('U2500001', 'M0000003', FALSE),
+--('U2500001', 'M0000005', FALSE);
 
 
 -- PLAYLISTMUSIC Table
@@ -847,7 +901,7 @@ INSERT INTO THREAD (THREADID, USERID, THREADCATEGORYID, THREADTITLE, THREADDESCR
 ('TH000007', 'U2500001', 'THC00002', 'Small Habits That Make a Big Difference', 'What little things help you stay consistent and productive?', 40, 2, 9, FALSE),
 ('TH000008', 'U2500001', 'THC00005', 'How Do You Unwind After a Long Day?', 'Share your go-to methods for relaxing and recharging', 26, 3, 8, FALSE),
 ('TH000009', 'U2500001', 'THC00002', 'Staying Focused in a Distracted World', 'Talk about how you minimize distractions and stay on track.', 37, 6, 16, FALSE),
-('TH000010', 'U2500001', 'THC00006', 'Why Waking Up Early Is Just Stupid', 'What is your wake up time.', 37, 6, 16, FALSE);
+('TH000010', 'U2500001', 'THC00006', 'Why Waking Up Early Is Just Stupid', 'What is your wake up time.', 5, 24, 16, FALSE);
 
 -- THREADIMAGE Table
 INSERT INTO THREADIMAGE (IMAGEID, THREADID, ISMAINIMAGE, ISDELETED, IMAGE) VALUES
@@ -895,13 +949,13 @@ INSERT INTO USERTHERAPIST (USERTHERAPISTID, USERID, THERAPISTID, DATEESTABLISHED
 ('UT000002', 'U2500002', 'TP000002', '2025-02-15', '2025-03-15', FALSE),
 ('UT000003', 'U2500003', 'TP000003', '2025-01-10', NULL, FALSE),
 ('UT000004', 'U2500004', 'TP000004', '2025-03-05', NULL, FALSE),
-('UT000005', 'U2500001', 'TP000005', '2025-02-01', NULL, FALSE),
+('UT000005', 'U2500005', 'TP000005', '2025-02-01', NULL, FALSE),
 ('UT000006', 'U2500006', 'TP000006', '2025-03-08', NULL, FALSE),
 ('UT000007', 'U2500007', 'TP000007', '2025-02-20', '2025-03-20', FALSE),
 ('UT000008', 'U2500008', 'TP000008', '2025-01-25', NULL, FALSE),
 ('UT000009', 'U2500009', 'TP000009', '2025-03-02', NULL, FALSE),
-('UT000010', 'U2500010', 'TP000010', '2025-02-28', NULL, FALSE);
-
+('UT000010', 'U2500010', 'TP000010', '2025-02-28', '2025-05-05', TRUE),
+('UT000011', 'U2500010', 'TP000002', '2025-05-05', NULL, FALSE);
 
 -- MESSAGE Table
 INSERT INTO MESSAGE (MESSAGEID, USERID, THERAPISTID, SENDER, CONTENT, TIMESTAMPSENT, TIMESTAMPREAD, ISDELETED) VALUES
@@ -932,17 +986,17 @@ INSERT INTO TIMESLOT (TIMESLOTID, THERAPISTID, TSDATE, STARTTIME, ENDTIME, STATU
 
 
 -- APPOINTMENT Table
-INSERT INTO APPOINTMENT (APPOINTMENTID, USERID, TIMESLOTID, APPOINTMENTLINK, STATUS, ISDELETED) VALUES
-('APAA0001', 'U2500001', 'TSA00001', 'www.therapymsia.com/appointment/APA0001', 'Scheduled', FALSE),
-('APAA0002', 'U2500002', 'TSA00002', 'www.therapymsia.com/appointment/APA0002', 'Scheduled', FALSE),
-('APAA0003', 'U2500003', 'TSA00003', 'www.therapymsia.com/appointment/APA0003', 'Scheduled', FALSE),
-('APAA0004', 'U2500004', 'TSA00004', 'www.therapymsia.com/appointment/APA0004', 'Scheduled', FALSE),
-('APAA0005', 'U2500001', 'TSA00005', 'www.therapymsia.com/appointment/APA0005', 'Scheduled', FALSE),
-('APAA0006', 'U2500006', 'TSA00006', 'www.therapymsia.com/appointment/APA0006', 'Scheduled', FALSE),
-('APAA0007', 'U2500007', 'TSA00007', 'www.therapymsia.com/appointment/APA0007', 'Scheduled', FALSE),
-('APAA0008', 'U2500008', 'TSA00008', 'www.therapymsia.com/appointment/APA0008', 'Scheduled', FALSE),
-('APAA0009', 'U2500009', 'TSA00009', 'www.therapymsia.com/appointment/APA0009', 'Scheduled', FALSE),
-('APAA0010', 'U2500010', 'TSA00010', 'www.therapymsia.com/appointment/APA0010', 'Scheduled', FALSE);
+INSERT INTO APPOINTMENT (APPOINTMENTID, USERID, TIMESLOTID, APPOINTMENTLINK, STATUS, LINKSENT, ISDELETED) VALUES
+('APAA0001', 'U2500001', 'TSA00001', 'www.therapymsia.com/appointment/APA0001', 'Done', TRUE, TRUE),
+('APAA0002', 'U2500002', 'TSA00002', 'www.therapymsia.com/appointment/APA0002', 'Done', TRUE, TRUE),
+('APAA0003', 'U2500003', 'TSA00003', 'www.therapymsia.com/appointment/APA0003', 'Done', TRUE, TRUE),
+('APAA0004', 'U2500004', 'TSA00004', 'www.therapymsia.com/appointment/APA0004', 'Done', TRUE, TRUE),
+('APAA0005', 'U2500001', 'TSA00005', 'www.therapymsia.com/appointment/APA0005', 'Done', TRUE, TRUE),
+('APAA0006', 'U2500006', 'TSA00006', 'www.therapymsia.com/appointment/APA0006', 'Done', TRUE, TRUE),
+('APAA0007', 'U2500007', 'TSA00007', 'www.therapymsia.com/appointment/APA0007', 'Done', TRUE, TRUE),
+('APAA0008', 'U2500008', 'TSA00008', 'www.therapymsia.com/appointment/APA0008', 'Done', TRUE, TRUE),
+('APAA0009', 'U2500009', 'TSA00009', 'www.therapymsia.com/appointment/APA0009', 'Done', TRUE, TRUE),
+('APAA0010', 'U2500010', 'TSA00010', 'www.therapymsia.com/appointment/APA0010', 'Done', TRUE, TRUE);
 
 
 -- CALLSESSION Table
