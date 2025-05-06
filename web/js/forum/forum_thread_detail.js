@@ -9,34 +9,7 @@ const selectedThreadID = document.querySelector('meta[name="selected-threadid"]'
 // Ensure commentIdReplyTo is declared and retrieved correctly
 const commentIdReplyTo = document.querySelector('meta[name="comment-id-reply-to"]')?.content || "undefined";
 
-// Function to toggle comment replies
-function toggleReplies(commentId) {
-    const repliesContainer = document.getElementById(commentId + '-replies');
-    const toggleButton = repliesContainer.previousElementSibling;
-    const toggleIcon = toggleButton.querySelector('i');
-    const toggleText = toggleButton.querySelector('span');
-
-    if (repliesContainer.classList.contains('replies-collapsed')) {
-        // Show replies
-        repliesContainer.classList.remove('replies-collapsed');
-        toggleIcon.classList.remove('fa-chevron-down');
-        toggleIcon.classList.add('fa-chevron-up');
-        toggleText.textContent = toggleText.textContent.replace('Show', 'Hide');
-    } else {
-        // Hide replies
-        repliesContainer.classList.add('replies-collapsed');
-        toggleIcon.classList.remove('fa-chevron-up');
-        toggleIcon.classList.add('fa-chevron-down');
-        toggleText.textContent = toggleText.textContent.replace('Hide', 'Show');
-    }
-}
-
-// DOM Content Loaded Event Listener
-document.addEventListener('DOMContentLoaded', function () {
-    // No need to add event listeners for toggle-replies
-    // as they already have an onclick attribute in the HTML
-    // that calls toggleReplies directly
-
+$(document).ready(function() {
     // Initialize Reply Buttons
     const replyButtons = document.querySelectorAll('.comment-action.reply');
     replyButtons.forEach(button => {
@@ -69,34 +42,11 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Close popup when clicking outside
-    document.addEventListener('click', function (event) {
-        const popups = document.querySelectorAll('.popup-container');
-        popups.forEach(popup => {
-            if (event.target === popup) {
-                closePopup(popup);
-            }
-        });
-    });
-
-    // Attach event listeners to upvote and downvote buttons
-    const threadUpvoteButton = document.querySelector('.thread-actions .action-btn.upvote');
-    const threadDownvoteButton = document.querySelector('.thread-actions .action-btn.downvote');
-
-    if (threadUpvoteButton && threadDownvoteButton) {
-        threadUpvoteButton.addEventListener('click', function () {
-            handleVote(this, true);
-        });
-        threadDownvoteButton.addEventListener('click', function () {
-            handleVote(this, true);
-        });
-    }
-
-    const commentVoteButtons = document.querySelectorAll('.comment-item .action-btn');
-    commentVoteButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const isUpvote = this.classList.contains('upvote');
-            handleVote(this, false);
+    // Initialize all vote buttons (thread, comments, and replies)
+    const allVoteButtons = document.querySelectorAll('.thread-actions .action-btn, .comment-item .action-btn');
+    allVoteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            handleVote(this);
         });
     });
 });
@@ -236,7 +186,7 @@ function openReportPopup(button) {
                     <button type="button" class="btn-cancel">Cancel</button>
                     <button type="submit" class="btn-confirm">Submit Report</button>
                 </div>
-                <input type="hidden" name="userId" value="${document.querySelector('meta[name=\"current-userid\"]').content}">
+                <input type="hidden" name="userId" value="${document.querySelector('meta[name="current-userid"]').content}">
                 <input type="hidden" name="threadId" value="${threadId}">
                 ${commentId ? `<input type="hidden" name="threadCommentId" value="${commentId}">` : ''}
             </div>
@@ -422,62 +372,160 @@ function submitReply(commentContent, replyText) {
             });
 }
 
+// Function to toggle replies
+function toggleReplies(commentId) {
+    const repliesContainer = document.getElementById(commentId + '-replies');
+    const toggleButton = repliesContainer.previousElementSibling;
+    
+    if (repliesContainer.classList.contains('replies-collapsed')) {
+        repliesContainer.classList.remove('replies-collapsed');
+        toggleButton.querySelector('i').classList.remove('fa-chevron-down');
+        toggleButton.querySelector('i').classList.add('fa-chevron-up');
+    } else {
+        repliesContainer.classList.add('replies-collapsed');
+        toggleButton.querySelector('i').classList.remove('fa-chevron-up');
+        toggleButton.querySelector('i').classList.add('fa-chevron-down');
+    }
+}
+
+// Add click outside popup functionality
+document.addEventListener('click', function(event) {
+    const popup = document.querySelector('.popup-container');
+    if (popup && !event.target.closest('.popup-content') && !event.target.closest('.action-btn') && !event.target.closest('.comment-action')) {
+        closePopup(popup);
+    }
+});
+
 // Add event listeners for upvote and downvote buttons
-function handleVote(button, isThreadVote) {
-    const parentContainer = button.closest(isThreadVote ? '.thread-actions' : '.comment-item');
-    const voteType = button.dataset.voteType === "true";
-    const id = isThreadVote ? document.querySelector('meta[name="selected-threadid"]').content : parentContainer.dataset.commentId;
+function getServletUrl() {
+    // Get the current URL path
+    const pathSegments = window.location.pathname.split('/');
+    // Find the index of the application root (MizukiForest)
+    const rootIndex = pathSegments.findIndex(segment => segment === 'MizukiForest');
+    
+    if (rootIndex === -1) {
+        console.error('Unable to determine application root path');
+        return null;
+    }
 
-    console.log("Vote ID:", id);
+    // Construct the base URL
+    const baseUrl = window.location.origin + pathSegments.slice(0, rootIndex + 1).join('/');
+    const servletUrl = `${baseUrl}/UpdateForumVoteTypeServlet`;
+    
+    // Validate URL format
+    try {
+        new URL(servletUrl);
+        return servletUrl;
+    } catch (e) {
+        console.error('Invalid URL constructed:', servletUrl);
+        return null;
+    }
+}
 
-    fetch(`${window.location.origin}${window.location.pathname.split('/').slice(0, -1).join('/')}../../../UpdateForumVoteTypeServlet`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
+function handleVote(button) {
+    const parentContainer = button.closest('.comment-item, .thread-actions');
+    const isThreadVote = button.closest('.thread-actions') !== null;
+    const isCommentVote = button.closest('.comment-item:not(.indented-comment)') !== null;
+    const isReplyVote = button.closest('.indented-comment') !== null;
+    
+    // Check if the button is already in the active state (filled)
+    const isUpvote = button.classList.contains('upvote');
+    const isFilled = button.querySelector('i').classList.contains(isUpvote ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-down-fill');
+    
+    let data = {
+        voteType: isUpvote ? "upvote" : "downvote"
+    };
+
+    // Add appropriate ID based on vote type
+    if (isThreadVote) {
+        data.threadId = selectedThreadID;
+        data.type = "thread";
+    } else if (isCommentVote) {
+        data.commentId = parentContainer.dataset.commentId;
+        data.type = "comment";
+    } else if (isReplyVote) {
+        data.replyId = parentContainer.dataset.commentId;
+        data.type = "reply";
+    }
+
+    // Get and validate servlet URL
+    const servletUrl = getServletUrl();
+    if (!servletUrl) {
+        alert('Error: Unable to determine the correct URL for vote processing');
+        return;
+    }
+
+    // Make AJAX call with validated URL
+    $.ajax({
+        url: servletUrl,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(response) {
+            try {
+                // Parse the response if it's a string
+                const result = typeof response === 'string' ? JSON.parse(response) : response;
+                
+                if (!result) {
+                    throw new Error('Empty response received');
+                }
+
+                // Update UI based on response
+                const upvoteButton = parentContainer.querySelector('.action-btn.upvote');
+                const downvoteButton = parentContainer.querySelector('.action-btn.downvote');
+                
+                if (!upvoteButton || !downvoteButton) {
+                    throw new Error('Vote buttons not found');
+                }
+                
+                // Update vote counts
+                upvoteButton.querySelector('span').textContent = result.upvotes;
+                downvoteButton.querySelector('span').textContent = result.downvotes;
+
+                // Get the icon elements
+                const upvoteIcon = upvoteButton.querySelector('i');
+                const downvoteIcon = downvoteButton.querySelector('i');
+
+                // First, remove fill from both icons
+                upvoteIcon.classList.remove('bi-hand-thumbs-up-fill');
+                upvoteIcon.classList.add('bi-hand-thumbs-up');
+                downvoteIcon.classList.remove('bi-hand-thumbs-down-fill');
+                downvoteIcon.classList.add('bi-hand-thumbs-down');
+
+                // Then update the appropriate icon based on the user's vote
+                if (result.userVoteType === "upvote") {
+                    upvoteIcon.classList.remove('bi-hand-thumbs-up');
+                    upvoteIcon.classList.add('bi-hand-thumbs-up-fill');
+                } else if (result.userVoteType === "downvote") {
+                    downvoteIcon.classList.remove('bi-hand-thumbs-down');
+                    downvoteIcon.classList.add('bi-hand-thumbs-down-fill');
+                }
+                // If userVoteType is null or undefined, both icons remain unfilled
+                
+            } catch (e) {
+                console.error('Error processing response:', e);
+                if (response.error) {
+                    alert('Error: ' + response.error);
+                } else {
+                    alert('Error processing vote response. Please try again.');
+                }
+            }
         },
-        body: JSON.stringify({
-            id: id,
-            isThreadVote: isThreadVote,
-            voteType: voteType
-        }),
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to process vote');
+        error: function(xhr, status, error) {
+            console.error('Error processing vote:', error);
+            console.error('Status:', status);
+            console.error('Response:', xhr.responseText);
+            
+            try {
+                const errorResponse = JSON.parse(xhr.responseText);
+                if (errorResponse.error) {
+                    alert('Error: ' + errorResponse.error);
+                } else {
+                    alert('Failed to process vote. Please try again later.');
+                }
+            } catch (e) {
+                alert('Failed to process vote. Please try again later.');
+            }
         }
-        return response.json();
-    })
-    .then(data => {
-        // Update the UI with the new vote counts
-        const upvoteButton = parentContainer.querySelector('.action-btn.upvote');
-        const downvoteButton = parentContainer.querySelector('.action-btn.downvote');
-
-        upvoteButton.querySelector('span').textContent = data.upvotes;
-        downvoteButton.querySelector('span').textContent = data.downvotes;
-
-        // Update button states
-        if (data.userVoteType === true) {
-            upvoteButton.classList.add('active');
-            downvoteButton.classList.remove('active');
-        } else if (data.userVoteType === false) {
-            upvoteButton.classList.remove('active');
-            downvoteButton.classList.add('active');
-        } else {
-            upvoteButton.classList.remove('active');
-            downvoteButton.classList.remove('active');
-        }
-
-        // Update session attributes dynamically if needed
-        if (isThreadVote) {
-            sessionStorage.setItem('threadVoteType', data.userVoteType);
-        } else {
-            const commentVotes = JSON.parse(sessionStorage.getItem('commentVotes')) || {};
-            commentVotes[id] = data.userVoteType;
-            sessionStorage.setItem('commentVotes', JSON.stringify(commentVotes));
-        }
-    })
-    .catch(error => {
-        console.error('Error processing vote:', error);
-        alert('Failed to process vote. Please try again later.');
     });
 }

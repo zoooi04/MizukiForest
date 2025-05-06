@@ -21,6 +21,7 @@
                   }
               %>
               ]'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum/forum_thread_list.css">
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath()%>/css/forum/forum_thread_detail.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -31,6 +32,7 @@
     <jsp:include page="${request.contextPath}/shared/commonHeader.jsp"/>
     <%@ include file="../../shared/header.jsp" %>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="../js/mizukibase.js"></script>
     <script src="<%= request.getContextPath()%>/js/forum/forum_thread_detail.js"></script>

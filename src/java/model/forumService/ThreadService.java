@@ -54,9 +54,7 @@ public class ThreadService {
     }
 
     public void saveThread(Thread thread) {
-        mgr.getTransaction().begin();
         mgr.merge(thread);
-        mgr.getTransaction().commit();
     }
 
     public List<model.Thread> findThreadsByUser(Users user) {
@@ -151,8 +149,8 @@ public class ThreadService {
             existingThread.setThreadtitle(updatedThread.getThreadtitle());
             existingThread.setThreaddescription(updatedThread.getThreaddescription());
             existingThread.setThreadcategoryid(updatedThread.getThreadcategoryid());
-            mgr.merge(existingThread); // Ensure changes are merged
-            mgr.flush(); // Force the changes to be written to the database
+            mgr.merge(existingThread);
+            mgr.flush();
             return true;
         }
         return false;
@@ -170,27 +168,21 @@ public class ThreadService {
     }
 
     public void castThreadVote(Threadvote threadVote) {
-        mgr.getTransaction().begin();
         mgr.persist(threadVote);
-        mgr.getTransaction().commit();
     }
 
     public void removeThreadVote(String threadId, String userId) {
         Threadvote vote = findThreadVote(userId, threadId);
         if (vote != null) {
-            mgr.getTransaction().begin();
             mgr.remove(vote);
-            mgr.getTransaction().commit();
         }
     }
 
     public void updateThreadVoteType(String threadId, String userId, boolean voteType) {
         Threadvote vote = findThreadVote(userId, threadId);
         if (vote != null) {
-            mgr.getTransaction().begin();
             vote.setVotetype(voteType);
             mgr.merge(vote);
-            mgr.getTransaction().commit();
         }
     }
 }
