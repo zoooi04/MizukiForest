@@ -2,7 +2,9 @@ package control.forum;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
@@ -15,46 +17,30 @@ import model.Reportcontent;
 import model.Thread;
 import model.Threadcomment;
 import model.forumService.ReportContentService;
+import model.forumService.ThreadService;
 
 @Transactional
 public class ViewForumReportedContentServlet extends HttpServlet {
 
     @PersistenceContext
-    private EntityManager em;
+    private EntityManager entityManager;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            ReportContentService reportService = new ReportContentService(em);
-            List<Reportcontent> unsolvedReports = reportService.findUnsolvedReports();
 
-            // Separate reports into threads and comments
-            List<Reportcontent> threadReports = new ArrayList<>();
-            List<Reportcontent> commentReports = new ArrayList<>();
+        HttpSession session = request.getSession();
 
-            for (Reportcontent report : unsolvedReports) {
-                if (report.getThreadid() != null && report.getThreadcommentid() == null) {
-                    threadReports.add(report);
-                } else if (report.getThreadcommentid() != null) {
-                    commentReports.add(report);
-                }
-            }
+        ReportContentService reportContentService = new ReportContentService(entityManager);
+        List<Reportcontent> reportedThreadList = reportContentService.findAllUnsolveReportedThread();
+        List<Reportcontent> reportedCommentList = reportContentService.findAllUnsolveReportedComment();
 
-            // Set attributes for the JSP
-            HttpSession session = request.getSession();
-            session.setAttribute("reportedThreads", threadReports);
-            session.setAttribute("reportedComments", commentReports);
+        session.setAttribute("reportedThreadList", reportedThreadList);
+        session.setAttribute("reportedCommentList", reportedCommentList);
 
-            // Forward to the JSP page
-            String redirectURL = request.getContextPath() + "/view/forum/forum-reported-content.jsp";
-            response.sendRedirect(redirectURL);
+        String redirectURL = request.getContextPath() + "/view/forum/forum-reported-content.jsp";
+        response.sendRedirect(redirectURL);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Error retrieving reported content: " + e.getMessage());
-        }
     }
 
     @Override

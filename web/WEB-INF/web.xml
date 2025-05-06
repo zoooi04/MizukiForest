@@ -148,7 +148,7 @@
         <servlet-name>SearchForestData</servlet-name>
         <servlet-class>control.forest.SearchForestData</servlet-class>
     </servlet>
-       <servlet>
+    <servlet>
         <servlet-name>ViewForumEntryServlet</servlet-name>
         <servlet-class>control.forum.ViewForumEntryServlet</servlet-class>
     </servlet>
@@ -191,6 +191,10 @@
     <servlet>
         <servlet-name>UpdateForumReportedContentServlet</servlet-name>
         <servlet-class>control.forum.UpdateForumReportedContentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewForumReportContentServlet</servlet-name>
+        <servlet-class>control.forum.ViewForumReportContentServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ViewDiaryEntriesByDateServlet</servlet-name>
@@ -383,6 +387,10 @@
     <servlet-mapping>
         <servlet-name>UpdateForumReportedContentServlet</servlet-name>
         <url-pattern>/UpdateForumReportedContentServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewForumReportContentServlet</servlet-name>
+        <url-pattern>/ViewForumReportContentServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

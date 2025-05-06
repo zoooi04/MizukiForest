@@ -6,16 +6,28 @@ package control.forum;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
+import model.Reportcontent;
+import model.forumService.ReportContentService;
+import model.forumService.ThreadCommentService;
+import model.forumService.ThreadService;
 
 /**
  *
  * @author johno
  */
+@Transactional
 public class UpdateForumReportedContentServlet extends HttpServlet {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,7 +55,6 @@ public class UpdateForumReportedContentServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -69,7 +80,35 @@ public class UpdateForumReportedContentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        String contentType = request.getParameter("contentType");
+        String reportedContentId = request.getParameter("reportedContentId");
+
+        String action = request.getParameter("action");
+
+        if (contentType.equals("comment")) {
+            String commentUser = request.getParameter("commentUser");
+            String commentContent = request.getParameter("commentContent");
+        }
+
+        ReportContentService reportContentService = new ReportContentService(entityManager);
+        Reportcontent reportedContent = reportContentService.findReportById(reportedContentId);
+        ThreadService threadService = new ThreadService(entityManager);
+        ThreadCommentService threadCommentService = new ThreadCommentService(entityManager);
+
+        if (action.equals("normal")) {
+            reportContentService.markReportAsSolved(reportedContentId);
+        } else if (action.equals("delete")) {
+            if (contentType.equals("thread")) {
+                threadService.deleteThread(reportedContent.getThreadid().getThreadid());
+            } else if (contentType.equals("comment")) {
+                threadCommentService.deleteComment(reportedContent.getThreadcommentid().getThreadcommentid());
+            }
+            reportContentService.markReportAsSolved(reportedContentId);
+        }
+
+        String redirectURL = request.getContextPath() + "/ViewForumReportedContentServlet";
+        response.sendRedirect(redirectURL);
     }
 
     /**
@@ -80,6 +119,6 @@ public class UpdateForumReportedContentServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

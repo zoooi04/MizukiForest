@@ -80,4 +80,20 @@ public class ReportContentService {
         query.setParameter("commentId", commentId);
         return query.getResultList();
     }
+
+    public List<Reportcontent> findAllUnsolveReportedThread() {
+        TypedQuery<Reportcontent> query = mgr.createQuery(
+            "SELECT r FROM Reportcontent r WHERE r.issolved = false AND r.threadcommentid IS NULL ORDER BY r.reportcontentid DESC",
+            Reportcontent.class
+        );
+        return query.getResultList();
+    }
+
+    public List<Reportcontent> findAllUnsolveReportedComment() {
+        TypedQuery<Reportcontent> query = mgr.createQuery(
+            "SELECT r FROM Reportcontent r WHERE r.issolved = false AND r.threadcommentid IS NOT NULL ORDER BY r.reportcontentid DESC",
+            Reportcontent.class
+        );
+        return query.getResultList();
+    }
 }
