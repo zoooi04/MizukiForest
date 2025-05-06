@@ -1,0 +1,33 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 5 May 2025, 10:27:39 am
+    Author     : huaiern
+*/
+
+:root {
+    --primary-color: #193827;
+    --secondary-color:#3b845c;
+}
+
+#sect-callsession{
+
+    .meet{
+        width: 80%;
+        height: 500px;
+        border: 3px solid var(--primary-color);
+        border-radius: 15px;
+        box-shadow: 0 0 30px 10px var(--primary-color);
+    }
+    
+    .btn-theme{
+        text-align:center;
+        background-color: var(--primary-color);
+        font-size: 0.8rem;
+        padding: 5px 10px;
+        border: 2px solid var(--secondary-color);
+
+    }
+}

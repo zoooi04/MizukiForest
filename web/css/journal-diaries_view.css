@@ -1,0 +1,483 @@
+/* 
+    Created on : May 4, 2025, 5:30:28 PM
+    Author     : JiaQuann
+*/
+
+/* Common styles across themes */
+.details-font {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.font {
+    font-family: Arial, sans-serif;
+}
+
+/* Header common structure */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.logo-text {
+    font-family: 'Silkscreen', cursive;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+}
+
+.nav-icon {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.right-icons {
+    display: flex;
+    gap: 15px;
+}
+
+/* Content structure */
+.content {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* Card common structure */
+.card {
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+}
+
+.private-badge {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    padding: 0 10px;
+    border-radius: 5px 5px 0 0;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+/* Diary edit area common structure */
+.edit-area {
+    padding: 15px;
+    margin: 20px 0;
+    min-height: 150px;
+}
+
+.edit-textarea {
+    width: 100%;
+    min-height: 150px;
+    border: none;
+    padding: 10px;
+    font-size: 14px;
+    resize: vertical;
+    box-sizing: border-box;
+    outline: none;
+}
+
+/* Buttons common structure */
+.actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.btn {
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+}
+
+.delete-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-text {
+        display: none;
+    }
+
+    .nav-item {
+        margin: 0 10px;
+    }
+
+    .content {
+        padding: 0 10px;
+    }
+    
+    .card-header {
+        padding: 8px 10px;
+    }
+    
+    .card-body {
+        padding: 10px;
+    }
+}
+
+/* ============== MIZUKI DARK THEME ============== */
+[data-theme="mizuki_dark"] {
+    --primary-color: #957FEF;
+    --primary-color-hover: #B29DF8;
+    --accent-color: #5d8dcb;
+    --text-color: #E9E9E9;
+    --text-secondary: #B0B0B0;
+    --bg-color: #242424;
+    --card-bg: #333333;
+    --card-border: #404040;
+    --input-bg: #2A2A2A;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    --divider: #484848;
+    --success-color: #2a9d4d;
+    --warning-color: #e0a800;
+    
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+[data-theme="mizuki_dark"] main {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+[data-theme="mizuki_dark"] .header {
+    border-bottom: 1px solid var(--divider);
+    background-color: var(--card-bg);
+}
+
+[data-theme="mizuki_dark"] .logo-text {
+    color: var(--text-color);
+}
+
+[data-theme="mizuki_dark"] .nav-item {
+    color: var(--text-secondary);
+}
+
+[data-theme="mizuki_dark"] .tabs {
+    background-color: var(--card-bg);
+}
+
+[data-theme="mizuki_dark"] .tab {
+    color: var(--text-secondary);
+}
+
+[data-theme="mizuki_dark"] .tab.active {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+}
+
+[data-theme="mizuki_dark"] .card {
+    background-color: var(--card-bg);
+    box-shadow: var(--shadow);
+}
+
+[data-theme="mizuki_dark"] .card-header {
+    border-bottom: 4px solid var(--accent-color);
+    background-color: #404040;
+    color: var(--text-color);
+}
+
+[data-theme="mizuki_dark"] .private-badge {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+}
+
+[data-theme="mizuki_dark"] .card-title {
+    color: var(--text-color);
+}
+
+[data-theme="mizuki_dark"] .card-body {
+    color: var(--text-color);
+}
+
+[data-theme="mizuki_dark"] .action-btn {
+    background-color: #404040;
+    border: 1px solid var(--card-border);
+    color: var(--text-color);
+}
+
+[data-theme="mizuki_dark"] .action-btn.primary {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    border: none;
+}
+
+[data-theme="mizuki_dark"] .btn-success {
+    background-color: var(--success-color);
+    color: var(--bg-color);
+}
+
+[data-theme="mizuki_dark"] .btn-secondary {
+    background-color: #404040;
+    color: var(--text-color);
+    border: 1px solid var(--card-border);
+}
+
+[data-theme="mizuki_dark"] .btn-warning {
+    background-color: var(--warning-color);
+    color: var(--bg-color);
+}
+
+[data-theme="mizuki_dark"] .edit-area {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+}
+
+[data-theme="mizuki_dark"] .form-control,.edit-textarea {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+}
+
+[data-theme="mizuki_dark"] svg {
+    fill: var(--text-color);
+}
+
+[data-theme="mizuki_dark"] .private-badge svg {
+    fill: var(--bg-color) !important;
+}
+
+[data-theme="mizuki_dark"] .action-btn.primary svg {
+    fill: var(--bg-color) !important;
+}
+
+/* ============== MIZUKI LIGHT THEME ============== */
+[data-theme="mizuki_light"] {
+    --primary-color: #6A5ACD;
+    --primary-color-hover: #5549a9;
+    --accent-color: #3c74b5;
+    --text-color: #333333;
+    --text-secondary: #666666;
+    --bg-color: #F8F9FA;
+    --card-bg: #FFFFFF;
+    --card-border: #E0E0E0;
+    --input-bg: #F5F5F5;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --divider: #EEEEEE;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+[data-theme="mizuki_light"] main {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+[data-theme="mizuki_light"] .header {
+    border-bottom: 1px solid var(--divider);
+    background-color: var(--card-bg);
+}
+
+[data-theme="mizuki_light"] .logo-text {
+    color: var(--text-color);
+}
+
+[data-theme="mizuki_light"] .nav-item {
+    color: var(--text-secondary);
+}
+
+[data-theme="mizuki_light"] .tabs {
+    background-color: var(--input-bg);
+}
+
+[data-theme="mizuki_light"] .tab {
+    color: var(--text-secondary);
+}
+
+[data-theme="mizuki_light"] .tab.active {
+    background-color: var(--accent-color);
+    color: var(--card-bg);
+}
+
+[data-theme="mizuki_light"] .card {
+    background-color: var(--card-bg);
+    box-shadow: var(--shadow);
+}
+
+[data-theme="mizuki_light"] .card-header {
+    border-bottom: 4px solid var(--accent-color);
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+[data-theme="mizuki_light"] .private-badge {
+    background-color: var(--accent-color);
+    color: var(--card-bg);
+}
+
+[data-theme="mizuki_light"] .card-title {
+    color: var(--text-color);
+}
+
+[data-theme="mizuki_light"] .card-body {
+    color: var(--text-color);
+}
+
+[data-theme="mizuki_light"] .action-btn {
+    background-color: var(--input-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-color);
+}
+
+[data-theme="mizuki_light"] .action-btn.primary {
+    background-color: var(--accent-color);
+    color: var(--card-bg);
+    border: none;
+}
+
+[data-theme="mizuki_light"] .btn-success {
+    background-color: var(--success-color);
+    color: var(--card-bg);
+}
+
+[data-theme="mizuki_light"] .btn-secondary {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--card-border);
+}
+
+[data-theme="mizuki_light"] .btn-warning {
+    background-color: var(--warning-color);
+    color: var(--text-color);
+}
+
+[data-theme="mizuki_light"] .edit-area {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+}
+
+[data-theme="mizuki_light"] .edit-textarea {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+}
+
+/* Specific mood tag styling (can be added as needed) */
+.tag {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+}
+
+[data-theme="mizuki_dark"] .tag {
+    background-color: #3A3A3A;
+    color: #B0B0B0;
+}
+
+[data-theme="mizuki_light"] .tag {
+    background-color: #F0E6FF;
+    color: var(--primary-color);
+}
+
+/* Add Entry Button styling */
+.add-entry-btn {
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+[data-theme="mizuki_dark"] .add-entry-btn {
+    background-color: var(--card-bg);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+[data-theme="mizuki_dark"] .add-entry-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+}
+
+[data-theme="mizuki_light"] .add-entry-btn {
+    background-color: var(--card-bg);
+    color: var(--primary-color);  
+    border: 2px solid var(--primary-color);
+}
+
+[data-theme="mizuki_light"] .add-entry-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--card-bg);
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion) {
+    * {
+        transition: none !important;
+    }
+}

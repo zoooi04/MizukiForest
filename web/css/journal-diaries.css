@@ -1,0 +1,190 @@
+/* 
+    Created on : May 4, 2025, 3:06:38 PM
+    Author     : JiaQuann
+*/
+
+.incsec {
+    user-select: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.diary-header {
+    padding: 0 15px;
+}
+
+.btn-light {
+    background-color: #3a3a3a;
+    color: #e0e0e0;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 15px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.btn-light:hover {
+    background-color: #4d4d4d;
+}
+
+.diary-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    padding: 10px;
+}
+
+@media (max-width: 992px) {
+    .diary-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .diary-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.diary-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-button-link {
+    text-decoration: none;
+}
+
+.add-button {
+    width: 150px;
+    height: 180px;
+    background-color: #333333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid #444444;
+}
+
+.add-button span {
+    font-size: 48px;
+    color: #bbbbbb;
+    transition: all 0.3s ease;
+}
+
+.add-button:hover {
+    background-color: #3e3e3e;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.add-button:hover span {
+    color: #ffffff;
+    font-size: 54px;
+}
+
+.diary-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.book-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.book-container:hover {
+    transform: translateY(-5px);
+    filter: brightness(1.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+}
+
+.book-image {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    filter: brightness(0.9);
+}
+
+.book-bookmarks {
+    position: absolute;
+    top: 15px;
+    right: 25%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.bookmark {
+    width: 15px;
+    height: 20px;
+    border-radius: 1px;
+}
+
+.orange {
+    background-color: #ff9933;
+}
+
+.yellow {
+    background-color: #ffd633;
+}
+
+.book-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+    text-align: center;
+    width: 80%;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.ui-datepicker {
+    background-color: #333333;
+    border: 1px solid #444444;
+    color: #e0e0e0;
+}
+
+.ui-datepicker-header {
+    background-color: #3a3a3a;
+    color: #ffffff;
+}
+
+.ui-datepicker a {
+    color: #cccccc;
+}
+
+#startDate::placeholder,
+#endDate::placeholder {
+    color: #868687;
+    opacity: 1;
+}
+
+.form-control {
+    background-color: #333333;
+    border: 1px solid #444444;
+    color: #e0e0e0;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.form-control:focus {
+    background-color: #3a3a3a;
+    border-color: #555555;
+    color: #ffffff;
+}

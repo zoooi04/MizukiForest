@@ -1,0 +1,103 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 9 Mar 2025, 11:31:31 pm
+    Author     : Chew Huai Ern
+*/
+
+:root {
+    --primary-color: #193827;
+    --secondary-color:#3b845c;
+}
+
+*{
+    box-sizing: border-box;
+    color: white;
+    font-family: Silkscreen;
+}
+
+html,body{
+    height: 100%;
+    margin:0;
+    overflow-x: visible !important;
+    font-family: "Poppins";
+}
+
+body{
+    background-color: #242424;
+}
+
+#sect-catalogue{
+    font-size: 0.8rem;
+
+
+    .hero-banner{
+        display:flex;
+        position: relative;
+        align-items:center;
+        justify-content:center;
+        height:16rem;
+        background-color: black;
+        background-size:cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-image: url("../media/images/herobanner.jpg");
+    }
+    
+    .overlay{
+        position: absolute;
+        height: 100%;
+        width:100%;
+        top:0;
+        left:0;
+        background: rgba(0,0,0,0.50);
+        color: white;
+        display:flex;
+        align-items: center;
+    }
+    
+    .hero-banner .title{
+        margin-top:6rem;
+        
+    }
+
+    
+    .center-layout{
+        widtha:80%;
+    }
+    
+    .card{
+        color: white!important;
+        background-color:#242424!important;
+        border:white;
+        box-shadow: 3px 3px;
+        
+        width: 200px;
+        height: 200px;
+        background: #1a1a1a;
+        border: 1px solid #66ff99;
+        box-shadow: 0 0 8px rgba(102, 255, 153, 0.4),
+            0 0 15px rgba(102, 255, 153, 0.2);
+        border-radius: 10px;
+    }
+    
+    .btn-theme{
+        text-align:center;
+        background-color: var(--primary-color);
+        font-size: 0.8rem;
+        padding: 5px 10px;
+        border: 2px solid var(--secondary-color);
+        text-decoration: none;
+        color:white;
+        margin-bottom: 20px;
+    }
+    
+    
+ 
+    
+   
+    
+    
+}

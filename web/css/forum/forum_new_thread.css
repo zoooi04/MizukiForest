@@ -1,0 +1,321 @@
+/* Dark mode styling for forum new thread */
+:root {
+    --bg-color: #121212;
+    --bg-secondary: #242424;
+    --bg-form: #2d2d35;
+    --text-color: #e0e0e0;
+    --text-muted: #9a9a9a;
+    --primary-color: #4978a8;
+    --primary-hover: #5989b9;
+    --border-color: #3d3d45;
+    --input-bg: #333340;
+    --input-border: #4a4a55;
+    --error-color: #dc3545;
+    --button-secondary-bg: #444450;
+    --button-secondary-hover: #55555f;
+    --button-secondary-text: #e0e0e0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Forum section styling */
+.forum-section {
+    padding: 2rem 0;
+}
+
+.forum-header {
+    margin-bottom: 2rem;
+}
+
+/* Back link */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    margin-bottom: 1rem;
+}
+
+.back-link:hover {
+    color: var(--text-color);
+}
+
+/* Thread form container */
+.new-thread-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--bg-form);
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+}
+
+/* Form elements */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    background: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.form-group input[type="text"] {
+    height: 2.5rem;
+}
+
+.form-group textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(73, 120, 168, 0.2);
+}
+
+/* Form actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-cancel, 
+.btn-create {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn-cancel {
+    background-color: var(--button-secondary-bg);
+    color: var(--button-secondary-text);
+}
+
+.btn-create {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: var(--button-secondary-hover);
+}
+
+.btn-create:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-cancel:active,
+.btn-create:active {
+    transform: translateY(1px);
+}
+
+/* Image upload area */
+.image-upload-container {
+    width: 100%;
+}
+
+.upload-area {
+    border: 2px dashed var(--input-border);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    cursor: pointer;
+}
+
+.upload-area:hover,
+.upload-area.dragover {
+    border-color: var(--primary-color);
+    background: rgba(73, 120, 168, 0.05);
+}
+
+.upload-area i {
+    font-size: 3rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.upload-area p {
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.file-upload-btn {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.file-upload-btn:hover {
+    background: var(--primary-hover);
+}
+
+/* Image preview area */
+.image-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.image-preview {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-preview .remove-image {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.image-preview .remove-image:hover {
+    background: rgba(220, 53, 69, 0.8);
+}
+
+/* Error styling */
+.error-message {
+    color: var(--error-color);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+.form-group.error input[type="text"],
+.form-group.error textarea {
+    border-color: var(--error-color);
+}
+
+/* Text styles */
+.text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.my-6 {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+    .new-thread-container {
+        padding: 1.5rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn-cancel, 
+    .btn-create {
+        width: 100%;
+    }
+    
+    .image-preview {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .forum-section {
+        padding: 1rem 0;
+    }
+    
+    .new-thread-container {
+        padding: 1rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .upload-area {
+        padding: 1.5rem 1rem;
+    }
+    
+    .upload-area i {
+        font-size: 2.5rem;
+    }
+    
+    .image-preview {
+        width: 100px;
+        height: 100px;
+    }
+}

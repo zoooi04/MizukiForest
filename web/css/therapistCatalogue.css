@@ -1,0 +1,172 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 9 Mar 2025, 11:31:31 pm
+    Author     : Chew Huai Ern
+*/
+
+:root {
+    --primary-color: #193827;
+    --secondary-color:#3b845c;
+}
+
+*{
+    box-sizing: border-box;
+    color: white;
+    font-family: Silkscreen;
+}
+
+html,body{
+    height: 100%;
+    margin:0;
+    overflow-x: visible !important;
+    font-family: "Silkscreen", sans-serif;
+}
+
+body{
+    background-color: #242424;
+}
+
+#sect-catalogue{
+    font-size: 0.8rem;
+
+    
+    .hero-banner{
+        display:flex;
+        position: relative;
+        align-items:center;
+        justify-content:center;
+        height:16rem;
+        background-color: black;
+        background-size:cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-image: url("../media/images/herobanner.jpg");
+    }
+
+    .overlay{
+        position: absolute;
+        height: 100%;
+        width:100%;
+        top:0;
+        left:0;
+        background: rgba(0,0,0,0.50);
+        color: white;
+        display:flex;
+        align-items: center;
+    }
+
+    .hero-banner .title{
+        margin-top:6rem;
+
+    }
+    
+    .center-layout{
+        width: 60%;
+        
+    }
+    
+ 
+    
+    .card{
+        background-color: #303030!important;
+    }
+    
+    .card-body{
+        display:flex;
+        justify-content:center;
+    }
+    
+    .therapist-name{
+        background-color: var(--secondary-color);
+        /*color: yellow;*/
+    }
+    
+    .card-text{
+        width:100%;
+    }
+    
+    .main-bullet>li {
+        list-style-type:none;
+        margin: 0;
+        margin-bottom: 10px;
+    }
+    
+    .btn-section{
+        display:flex;
+        justify-content: center;
+        width: 100%;
+        padding-bottom: 1rem;
+    }
+    
+    .choose-therapist-btn{
+        width: 80%;
+        font-size: 0.8rem;
+        padding: 5px 10px;
+
+        
+    }
+    
+    .filter{
+        margin-top: 5rem;
+        margin-bottom: 3rem;
+    }
+    
+    .another-title{
+        font-size: 1.2rem;
+    }
+    
+    .filter div:hover{
+        background-color: #262626;
+    }
+    
+    .card img{
+        object-fit: cover;
+        height: 300px;
+    }
+    
+    .modal-content{
+        background-color: #242424;
+
+    }
+    
+    .modal-content *{
+        border:none;
+    }
+    
+    .btn-theme{
+        text-align:center;
+        background-color: var(--primary-color);
+        font-size: 0.8rem;
+        padding: 5px 10px;
+        border: 2px solid var(--secondary-color);
+
+    }
+
+    .btn-theme:hover{
+        background-color:var(--secondary-color);
+    }
+    
+    a:hover{
+        background-color:var(--secondary-color);
+    }
+    
+    a {
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer; /* Optional */
+    }
+    
+    .btn-theme[disabled]{
+        background-color: transparent;
+        border: 0;
+    }
+    
+    .btn-theme[disabled]:hover{
+        background-color: transparent;
+    }
+
+
+}

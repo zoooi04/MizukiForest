@@ -1,0 +1,140 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
+package control.forum;
+
+import java.io.IOException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
+import model.Threadcomment;
+import model.Users;
+import model.forumService.ThreadCommentService;
+import model.Thread;
+
+/**
+ *
+ * @author johno
+ */
+@Transactional
+public class AddForumThreadCommentServlet extends HttpServlet {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        response.getWriter().write("This servlet handles adding comments to forum threads.");
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Extract parameters from the request
+        String userId = request.getParameter("userId");
+        String threadId = request.getParameter("threadId");
+        String commentDescription = request.getParameter("commentDescription");
+        String commentIdReplyTo = request.getParameter("commentIdReplyTo");
+
+        // Log all parameters for debugging
+        request.getParameterMap().forEach((key, value) -> {
+            System.out.println("Parameter: " + key + " = " + String.join(", ", value));
+        });
+
+        // Log the received threadId for debugging
+        System.out.println("Received threadId: " + threadId);
+
+        if (userId == null || threadId == null || commentDescription == null || userId.isEmpty() || threadId.isEmpty() || commentDescription.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing required parameters.");
+            return;
+        }
+
+        try {
+            // Fetch the Thread entity from the database
+            Thread thread = entityManager.find(Thread.class, threadId);
+            if (thread == null) {
+                System.out.println("Thread with ID " + threadId + " not found in the database.");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid thread ID.");
+                return;
+            }
+
+            // Initialize the service
+            ThreadCommentService commentService = new ThreadCommentService(entityManager);
+
+            // Create a new Threadcomment object
+            Threadcomment comment = new Threadcomment();
+            comment.setThreadcommentid(commentService.generateNextCommentId());
+            comment.setUserid(new Users(userId));
+            comment.setThreadid(thread); // Use the managed Thread entity
+            comment.setContent(commentDescription);
+            comment.setCommentidreplyingto(commentIdReplyTo != null && !commentIdReplyTo.isEmpty() ? new Threadcomment(commentIdReplyTo) : null);
+            comment.setPostdatetime(new java.util.Date());
+            comment.setUpvote(0);
+            comment.setDownvote(0);
+            comment.setIsdeleted(false);
+
+            // Add the comment to the database
+            commentService.addComment(comment);
+
+            // Send success response
+//            response.setStatus(HttpServletResponse.SC_OK);
+//            response.getWriter().write("Comment added successfully.");
+            // redirect
+            String redirectURL = request.getContextPath() + "/ViewForumDetailServlet?thread_id=" + thread.getThreadid();
+            response.sendRedirect(redirectURL);
+
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while adding the comment.");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "This servlet handles adding comments to forum threads.";
+    }// </editor-fold>
+
+}

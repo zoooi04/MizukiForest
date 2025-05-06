@@ -1,0 +1,301 @@
+/* 
+    Created on : May 4, 2025, 3:06:38 PM
+    Author     : JiaQuann
+*/
+
+
+h1, h2, h3, h4 {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    text-align: center;
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Containers */
+.chart-container {
+    background-color: white;
+    border: 2px solid #333;
+    padding: 20px;
+    margin-bottom: 40px;
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Filter Controls */
+.filter-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.filter-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+/* Buttons */
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.pixel-btn {
+    background-color: #eee;
+    border: 2px solid #333;
+    font-family: monospace;
+    font-size: 16px;
+    padding: 8px 16px;
+    margin: 4px;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+}
+
+.pixel-btn:hover {
+    background-color: #ddd;
+}
+
+.pixel-btn.active {
+    background-color: #ffd700;
+    color: #333;
+}
+
+/* Chart Canvas */
+.chart-wrapper {
+    height: 350px;
+    position: relative;
+}
+
+/* Legend */
+.legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    border: 1px solid #333;
+}
+
+/* Table */
+table {
+    width: 60%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+th, td {
+    border: 2px solid #333;
+    padding: 8px 16px;
+    text-transform: uppercase;
+}
+
+th {
+    background-color: #eee;
+}
+
+/* Mood Chart Styles for Mizuki Dark Theme */
+[data-theme="mizuki_dark"] .chart-container {
+    background-color: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 40px;
+    box-shadow: var(--shadow);
+    color: var(--text-color);
+}
+
+[data-theme="mizuki_dark"] .chart-container h2 {
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--divider);
+}
+
+/* Filter Controls */
+[data-theme="mizuki_dark"] .filter-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 25px;
+    align-items: center;
+}
+
+[data-theme="mizuki_dark"] .filter-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+[data-theme="mizuki_dark"] .filter-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    color: var(--text-color);
+}
+
+/* Button styling */
+[data-theme="mizuki_dark"] .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+[data-theme="mizuki_dark"] .pixel-btn {
+    background-color: var(--input-bg);
+    border: 2px solid var(--card-border);
+    color: var(--text-color);
+    font-family: monospace;
+    font-size: 14px;
+    padding: 8px 16px;
+    margin: 4px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s;
+    text-transform: uppercase;
+}
+
+[data-theme="mizuki_dark"] .pixel-btn:hover {
+    background-color: var(--card-border);
+}
+
+[data-theme="mizuki_dark"] .pixel-btn.active {
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+    border-color: var(--primary-color);
+}
+
+/* Chart Canvas */
+[data-theme="mizuki_dark"] .chart-wrapper {
+    height: 350px;
+    position: relative;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid var(--card-border);
+}
+
+/* Legend styling */
+[data-theme="mizuki_dark"] .legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: var(--input-bg);
+    border-radius: 8px;
+}
+
+[data-theme="mizuki_dark"] .legend-item {
+    display: flex;
+    align-items: center;
+    margin: 5px 10px;
+}
+
+[data-theme="mizuki_dark"] .legend-color {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    border: 1px solid var(--text-secondary);
+    border-radius: 3px;
+}
+
+[data-theme="mizuki_dark"] .legend-item span {
+    color: var(--text-color);
+    font-size: 0.9rem;
+}
+
+/* Mood Colors - Customized for dark theme */
+[data-theme="mizuki_dark"] .legend-color[style*="background-color: #ffd700"] {
+    background-color: #FFD700 !important; /* Excited - brighter gold */
+}
+
+[data-theme="mizuki_dark"] .legend-color[style*="background-color: #ff7f50"] {
+    background-color: #FF7F50 !important; /* Happy - coral */
+}
+
+[data-theme="mizuki_dark"] .legend-color[style*="background-color: #98fb98"] {
+    background-color: #98FB98 !important; /* Calm - pale green */
+}
+
+[data-theme="mizuki_dark"] .legend-color[style*="background-color: #add8e6"] {
+    background-color: #ADD8E6 !important; /* Neutral - light blue */
+}
+
+[data-theme="mizuki_dark"] .legend-color[style*="background-color: #87ceeb"] {
+    background-color: #87CEEB !important; /* Sad - sky blue */
+}
+
+[data-theme="mizuki_dark"] .legend-color[style*="background-color: #9370db"] {
+    background-color: #9370DB !important; /* Frustrated - medium purple */
+}
+
+[data-theme="mizuki_dark"] .legend-color[style*="background-color: #ff6347"] {
+    background-color: #FF6347 !important; /* Angry - tomato */
+}
+
+/* Chart Tooltip Override */
+[data-theme="mizuki_dark"] .chart-container .chartjs-tooltip {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--primary-color) !important;
+    border-radius: 5px !important;
+    padding: 8px !important;
+    box-shadow: var(--shadow) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    [data-theme="mizuki_dark"] .chart-container {
+        padding: 15px;
+    }
+
+    [data-theme="mizuki_dark"] .chart-wrapper {
+        height: 300px;
+    }
+
+    [data-theme="mizuki_dark"] .legend-item {
+        margin: 3px 5px;
+    }
+
+    [data-theme="mizuki_dark"] .pixel-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,222 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 9 Mar 2025, 11:31:31 pm
+    Author     : Chew Huai Ern
+*/
+
+:root {
+    --primary-color: #193827;
+    --secondary-color:#3b845c;
+}
+
+*{
+    box-sizing: border-box;
+    color: white;
+    font-family: Silkscreen;
+}
+
+html,body{
+    height: 100%;
+    margin:0;
+    overflow-x: visible !important;
+    font-family: "Poppins";
+}
+
+body{
+    background-color: #242424;
+}
+
+#sect-catalogue{
+    font-size: 0.8rem;
+
+
+    .hero-banner{
+        display:flex;
+        position: relative;
+        align-items:center;
+        justify-content:center;
+        height:16rem;
+        background-color: black;
+        background-size:cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-image: url("../media/images/herobanner.jpg");
+    }
+    
+    .overlay{
+        position: absolute;
+        height: 100%;
+        width:100%;
+        top:0;
+        left:0;
+        background: rgba(0,0,0,0.50);
+        color: white;
+        display:flex;
+        align-items: center;
+    }
+    
+    .hero-banner .title{
+        margin-top:6rem;
+        
+    }
+
+    
+    .therapist-name{
+        font-size: 1rem;
+    }
+
+    .book-app-btn{
+        width: 80%;
+        background-color: var(--primary-color);
+        font-size: 0.8rem;
+        padding: 5px 10px;
+        border: 2px solid var(--secondary-color);
+
+    }
+
+    .book-app-btn:hover{
+        background-color:var(--secondary-color);
+    }
+    
+    /*chat*/
+    .chat-wrapper{
+        height: 70vh;
+    }
+    
+    .chat-bar{
+        height: 11%;
+        padding: 16px 20px;
+        background-color: #193827;
+        border: 2px solid #3b845c;
+        border-bottom: 5px solid #3b845c;
+        box-shadow:0px -5px 0px 0px #2a5e41 inset;
+    }
+    
+    .chat-box{
+        height: 60%;
+        background-color: #ffd590;
+        border-left: 3px solid #3b845c;
+        border-right: 3px solid #3b845c;
+        border-bottom: 3px solid #3b845c;
+        
+        overflow-y: scroll;
+    }
+    
+    .chat-box::-webkit-scrollbar-track {
+        background: var(--secondary-color); /* light yellow */
+    }
+    
+    .chat-box::-webkit-scrollbar-thumb {
+        background: var(--primary-color); /* light yellow */
+    }
+    
+    .start-of-convo{
+        font-size:10px;
+    }
+    
+    .chat-name{
+        font-size: 10px;
+        color: gray;
+    }
+    
+    .speech-bubble{
+        position: relative;
+        background-color:#193827;
+        color:white;
+        font-size: 10px;
+        border: 2px solid #3b845c;
+        border-radius: 3px;
+    }
+    
+    .chat-list{
+        height:70vh;
+        border-top: 2px solid var(--secondary-color);
+        border-left: 2px solid var(--secondary-color);
+        border-bottom: 2px solid var(--secondary-color);
+        background-color: #132c1e;
+        
+        overflow-y: scroll;
+    }
+    
+    .chat-list::-webkit-scrollbar-track {
+        background: var(--primary-color); /* light yellow */
+    }
+
+    .chat-list::-webkit-scrollbar-thumb {
+        background: var(--secondary-color); /* light yellow */
+    }
+    
+    .chat-item{
+        border-bottom: 2px solid var(--secondary-color);
+        padding: 16px 20px;
+    }
+    
+    .chat-box-inactive{
+        display:none;
+    }
+    
+    .active-chat{
+        pointer-events: none;
+        background-color: var(--primary-color);
+
+    }
+    
+    .inactive-chat{
+        color: darkgray;
+        background-color: #132c1e;
+    }
+    
+    .inactive-chat:hover{
+        cursor:pointer;
+        color: yellowgreen;
+        background-color: #132c1e;
+    }
+    
+    
+    .input-message{
+        height:29%;
+        border-left: 2px solid var(--secondary-color);
+        border-bottom: 2px solid var(--secondary-color);
+        border-right: 2px solid var(--secondary-color);
+        padding-top: 10px;  
+        padding-bottom: 10px;
+        background-color: var(--primary-color);
+    }
+    
+    .input-message > textarea{
+        display:block;
+        width: 100%;
+        height:70%;
+        background: transparent;
+        border: 0;
+        text-align: start;
+        font-size: 10px;
+        resize: none;
+    }
+    
+    .input-message > .send-btn{
+        text-align: center;
+        height:29%;
+        width:30%;
+        padding: 5px 10px;
+        background: transparent;
+        border: 2px solid var(--secondary-color);
+        font-size: 10px;
+        resize: none;
+        float:right;
+        vertical-align: baseline;
+    }
+    
+    .input-message > .send-btn:hover{
+        background-color:var(--secondary-color);
+    }
+    
+    .input-message > textarea:focus{
+        outline:none;
+    }
+    
+    
+}
