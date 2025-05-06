@@ -213,7 +213,7 @@
                                 <% Map<String, Map<String, Boolean>> replyVotes = (Map<String, Map<String, Boolean>>) session.getAttribute("replyVotes"); %>
                                 <% if (replies != null && !replies.isEmpty()) { %>
                                 <% for (model.Threadcomment reply : replies) {%>
-                                <div class="comment-item indented-comment" >
+                                <div class="comment-item indented-comment" data-comment-id="<%= reply.getThreadcommentid()%>">
                                     <img src="<%= request.getContextPath()%>/media/images/mizuki.png" alt="User Avatar" class="comment-avatar">
                                     <div class="comment-content">
                                         <div class="comment-author">

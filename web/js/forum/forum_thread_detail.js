@@ -312,7 +312,7 @@ function submitReply(commentContent, replyText) {
             .then(data => {
                 // Add the new reply to the UI
                 const newReplyHTML = `
-            <div class="comment-item indented-comment">
+            <div class="comment-item indented-comment" data-comment-id="${data.commentId}">
                 <img src="${document.querySelector('.comment-avatar').src}" alt="User Avatar" class="comment-avatar">
                 <div class="comment-content">
                     <div class="comment-author">${data.username}</div>
@@ -430,7 +430,6 @@ function handleVote(button) {
     
     // Check if the button is already in the active state (filled)
     const isUpvote = button.classList.contains('upvote');
-    const isFilled = button.querySelector('i').classList.contains(isUpvote ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-down-fill');
     
     let data = {
         voteType: isUpvote ? "upvote" : "downvote"
@@ -440,12 +439,11 @@ function handleVote(button) {
     if (isThreadVote) {
         data.threadId = selectedThreadID;
         data.type = "thread";
-    } else if (isCommentVote) {
-        data.commentId = parentContainer.dataset.commentId;
+    } else if (isCommentVote || isReplyVote) {
+        // Get the comment ID from the closest comment-item, whether it's a reply or main comment
+        const commentItem = button.closest('.comment-item');
+        data.commentId = commentItem.dataset.commentId;
         data.type = "comment";
-    } else if (isReplyVote) {
-        data.replyId = parentContainer.dataset.commentId;
-        data.type = "reply";
     }
 
     // Get and validate servlet URL
