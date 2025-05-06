@@ -13,6 +13,7 @@ import model.Users;
 import model.Threadvote;
 
 public class ThreadService {
+
     @PersistenceContext
     private EntityManager mgr;
 
@@ -23,7 +24,7 @@ public class ThreadService {
     public String generateNextThreadId() {
         try {
             String lastId = mgr.createQuery(
-                    "SELECT t.threadid FROM Thread t ORDER BY t.threadid DESC", 
+                    "SELECT t.threadid FROM Thread t ORDER BY t.threadid DESC",
                     String.class)
                     .setMaxResults(1)
                     .getSingleResult();
@@ -60,8 +61,8 @@ public class ThreadService {
 
     public List<model.Thread> findThreadsByUser(Users user) {
         TypedQuery<model.Thread> query = mgr.createQuery(
-            "SELECT t FROM Thread t WHERE t.userid = :user AND t.isdeleted = false", 
-            model.Thread.class
+                "SELECT t FROM Thread t WHERE t.userid = :user AND t.isdeleted = false",
+                model.Thread.class
         );
         query.setParameter("user", user);
         return query.getResultList();
@@ -69,8 +70,8 @@ public class ThreadService {
 
     public List<model.Thread> findThreadsByCategory(Threadcategory category) {
         TypedQuery<model.Thread> query = mgr.createQuery(
-            "SELECT t FROM Thread t WHERE t.threadcategoryid = :category AND t.isdeleted = false", 
-            model.Thread.class
+                "SELECT t FROM Thread t WHERE t.threadcategoryid = :category AND t.isdeleted = false",
+                model.Thread.class
         );
         query.setParameter("category", category);
         return query.getResultList();
@@ -88,19 +89,19 @@ public class ThreadService {
 
     public List<model.Thread> findAllThreads() {
         TypedQuery<model.Thread> query = mgr.createQuery(
-            "SELECT t FROM Thread t WHERE t.isdeleted = false", 
-            model.Thread.class
+                "SELECT t FROM Thread t WHERE t.isdeleted = false",
+                model.Thread.class
         );
         return query.getResultList();
     }
 
     public List<model.Thread> findAllThreads(String category, String vote) {
         StringBuilder queryBuilder = new StringBuilder("SELECT t FROM Thread t WHERE t.isdeleted = false");
-    
+
         if (category != null && !category.equals("all")) {
             queryBuilder.append(" AND t.threadcategoryid.threadcategoryid = :category");
         }
-    
+
         if (vote != null) {
             if (vote.equals("upvote")) {
                 queryBuilder.append(" ORDER BY t.upvote DESC");
@@ -108,16 +109,16 @@ public class ThreadService {
                 queryBuilder.append(" ORDER BY t.downvote DESC");
             }
         }
-    
+
         TypedQuery<model.Thread> query = mgr.createQuery(queryBuilder.toString(), model.Thread.class);
-    
+
         if (category != null && !category.equals("all")) {
             query.setParameter("category", category);
         }
-    
+
         return query.getResultList();
     }
-    
+
     public List<model.Thread> findThreadsByUserAndFilters(String userId, String category, String vote) {
         Users user = mgr.find(Users.class, userId);
         StringBuilder queryBuilder = new StringBuilder("SELECT t FROM Thread t WHERE t.userid = :userId AND t.isdeleted = false");
