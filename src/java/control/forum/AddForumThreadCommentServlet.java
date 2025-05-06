@@ -68,21 +68,23 @@ public class AddForumThreadCommentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // Print all request parameters
+        System.out.println("\nReceived comment request parameters:");
+        System.out.println("userId: " + request.getParameter("userId"));
+        System.out.println("threadId: " + request.getParameter("threadId"));
+        System.out.println("commentDescription: " + request.getParameter("commentDescription"));
+        System.out.println("commentIdReplyTo: " + request.getParameter("commentIdReplyTo"));
+
         // Extract parameters from the request
         String userId = request.getParameter("userId");
         String threadId = request.getParameter("threadId");
         String commentDescription = request.getParameter("commentDescription");
         String commentIdReplyTo = request.getParameter("commentIdReplyTo");
 
-        // Log all parameters for debugging
-        request.getParameterMap().forEach((key, value) -> {
-            System.out.println("Parameter: " + key + " = " + String.join(", ", value));
-        });
-
-        // Log the received threadId for debugging
-        System.out.println("Received threadId: " + threadId);
-
-        if (userId == null || threadId == null || commentDescription == null || userId.isEmpty() || threadId.isEmpty() || commentDescription.isEmpty()) {
+        if (userId == null || threadId == null || commentDescription == null || 
+            userId.isEmpty() || threadId.isEmpty() || commentDescription.isEmpty()) {
+            System.out.println("Error: Missing required parameters");
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing required parameters.");
             return;
         }
@@ -91,19 +93,16 @@ public class AddForumThreadCommentServlet extends HttpServlet {
             // Fetch the Thread entity from the database
             Thread thread = entityManager.find(Thread.class, threadId);
             if (thread == null) {
-                System.out.println("Thread with ID " + threadId + " not found in the database.");
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid thread ID.");
-                return;
+                System.out.println("Error: Thread not found with ID: " + threadId);
+                throw new IllegalArgumentException("Thread not found: " + threadId);
             }
 
-            // Initialize the service
+            // Create and save the comment
             ThreadCommentService commentService = new ThreadCommentService(entityManager);
-
-            // Create a new Threadcomment object
             Threadcomment comment = new Threadcomment();
             comment.setThreadcommentid(commentService.generateNextCommentId());
-            comment.setUserid(new Users(userId));
-            comment.setThreadid(thread); // Use the managed Thread entity
+            comment.setThreadid(thread);
+            comment.setUserid(entityManager.find(Users.class, userId));
             comment.setContent(commentDescription);
             comment.setCommentidreplyingto(commentIdReplyTo != null && !commentIdReplyTo.isEmpty() ? new Threadcomment(commentIdReplyTo) : null);
             comment.setPostdatetime(new java.util.Date());
@@ -111,19 +110,17 @@ public class AddForumThreadCommentServlet extends HttpServlet {
             comment.setDownvote(0);
             comment.setIsdeleted(false);
 
-            // Add the comment to the database
             commentService.addComment(comment);
+            System.out.println("Successfully added comment with ID: " + comment.getThreadcommentid());
 
-            // Send success response
-//            response.setStatus(HttpServletResponse.SC_OK);
-//            response.getWriter().write("Comment added successfully.");
-            // redirect
+            // Redirect to the thread detail page
             String redirectURL = request.getContextPath() + "/ViewForumDetailServlet?thread_id=" + thread.getThreadid();
             response.sendRedirect(redirectURL);
 
         } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while adding the comment.");
+            System.out.println("Error adding comment: " + e.getMessage());
             e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while adding the comment.");
         }
     }
 
